@@ -33,7 +33,6 @@ namespace Lightwerk\L10nTranslator\Domain\Model;
  */
 class Search
 {
-
     /**
      * @var string
      */
@@ -54,7 +53,8 @@ class Search
      * @param string $language
      * @param string $l10nFile
      */
-    public function __construct($searchString = '', $language = '', $l10nFile = '') {
+    public function __construct($searchString = '', $language = '', $l10nFile = '')
+    {
         $this->searchString = $searchString;
         $this->language = $language;
         $this->l10nFile = $l10nFile;
@@ -85,5 +85,4 @@ class Search
     {
         return $this->l10nFile;
     }
-
 }

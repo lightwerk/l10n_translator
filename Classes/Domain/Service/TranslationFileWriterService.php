@@ -58,9 +58,9 @@ class TranslationFileWriterService implements SingletonInterface
      * @return void
      * @throws Exception
      */
-    public function writeTranslationXlf(AbstractTranslationFile $translationFile) {
-
-        $xmlFile = array();
+    public function writeTranslationXlf(AbstractTranslationFile $translationFile)
+    {
+        $xmlFile = [];
         $language = $translationFile->getLanguage();
         $extension = $translationFile->getExtension();
 
@@ -89,15 +89,16 @@ class TranslationFileWriterService implements SingletonInterface
         $xmlFile[] = '	</file>';
         $xmlFile[] = '</xliff>';
 
-        if (is_dir($translationFile->getSplFileInfo()->getPath()) === FALSE) {
-            $res = GeneralUtility::mkdir_deep($translationFile->getSplFileInfo()->getPath());
-            if ($res === FALSE) {
-                throw new Exception('cannot create directory file ' . $translationFile->getSplFileInfo()->getPath(), 1466440410);
+        if (is_dir($translationFile->getSplFileInfo()->getPath()) === false) {
+            try {
+                GeneralUtility::mkdir_deep($translationFile->getSplFileInfo()->getPath());
+            } catch (\Exception $e) {
+                throw new Exception('Cannot create directory file ' . $translationFile->getSplFileInfo()->getPath() . '. Error: ' . $e->getMessage(), 1466440410);
             }
         }
 
         $res = GeneralUtility::writeFile(str_replace('.xml', '.xlf', $translationFile->getCleanPath()), implode(LF, $xmlFile));
-        if ($res === FALSE) {
+        if ($res === false) {
             throw new Exception('cannot write file ' . $translationFile->getCleanPath(), 1466440408);
         }
     }
@@ -107,8 +108,8 @@ class TranslationFileWriterService implements SingletonInterface
      * @return void
      * @throws Exception
      */
-    public function writeTranslationXml(AbstractTranslationFile $translationFile) {
-
+    public function writeTranslationXml(AbstractTranslationFile $translationFile)
+    {
         $xmlOptions = array(
             'parentTagMap'=>array(
                 'data'=>'languageKey',
@@ -122,10 +123,8 @@ class TranslationFileWriterService implements SingletonInterface
         $xmlFile = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>'.chr(10);
         $xmlFile .= GeneralUtility::array2xml($translationFile->translationsToArray(), '', 0, 'T3locallangExt', 0, $xmlOptions);
         $res = GeneralUtility::writeFile($translationFile->getCleanPath(), implode(LF, $xmlFile));
-        if ($res === FALSE) {
+        if ($res === false) {
             throw new Exception('cannot write file ' . $translationFile->getCleanPath(), 1466440409);
         }
     }
-
-
 }

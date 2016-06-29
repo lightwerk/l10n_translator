@@ -53,10 +53,10 @@ class Translation
     protected $path = '';
 
     /**
-     * @param $path
-     * @param $translationKey
-     * @param $translationTarget
-     * @param $translationSource
+     * @param string $path
+     * @param string $translationKey
+     * @param string $translationTarget
+     * @param string $translationSource
      */
     public function __construct($path, $translationKey, $translationTarget, $translationSource = '')
     {
@@ -67,15 +67,12 @@ class Translation
     }
 
     /**
-     * @param $searchString
+     * @param string $searchString
      * @return bool
      */
     public function matchSearchString($searchString)
     {
-        if (strpos($this->getTranslationTarget(), $searchString) !== false) {
-            return true;
-        }
-        return false;
+        return strpos($this->getTranslationTarget(), $searchString) !== false;
     }
 
     /**
@@ -128,6 +125,4 @@ class Translation
     {
         return $this->path;
     }
-
-
 }

@@ -40,7 +40,7 @@ class L10nConfiguration implements SingletonInterface
     public function getAvailableSystemLanguages()
     {
         $langs = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'];
-        $availableLanguages = array();
+        $availableLanguages = [];
         foreach ($langs as $lang) {
             if (trim($lang) !== '') {
                 $availableLanguages[] = $lang;
@@ -71,6 +71,4 @@ class L10nConfiguration implements SingletonInterface
         $configuration = $this->getConfiguration();
         return GeneralUtility::trimExplode(',', $configuration['availableLanguages'], true);
     }
-
-
 }

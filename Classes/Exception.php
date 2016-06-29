@@ -28,6 +28,7 @@ namespace Lightwerk\L10nTranslator;
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class Exception extends \TYPO3\CMS\Extbase\Exception {
+class Exception extends \TYPO3\CMS\Extbase\Exception
+{
 
 }

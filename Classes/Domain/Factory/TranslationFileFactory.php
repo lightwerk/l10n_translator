@@ -49,14 +49,15 @@ class TranslationFileFactory implements SingletonInterface
     protected $localizationFactory;
     
     /**
-     * @param $relativPath
+     * @param string $relativePath
      * @return TranslationFile
      * @throws Exception
      */
-    public function findByRelativPath($relativPath) {
-        $splFileInfo = new \SplFileInfo(PATH_site . TranslationFile::FOLDER . DIRECTORY_SEPARATOR . $relativPath);
-        if ($splFileInfo->isFile() === FALSE) {
-            throw new Exception('cannot create splFileInfo with path ' . $relativPath, 1466093531);
+    public function findByRelativePath($relativePath)
+    {
+        $splFileInfo = new \SplFileInfo(PATH_site . TranslationFile::FOLDER . DIRECTORY_SEPARATOR . $relativePath);
+        if ($splFileInfo->isFile() === false) {
+            throw new Exception('Cannot create splFileInfo with path ' . $relativePath, 1466093531);
         }
         $translationFile = new TranslationFile();
         $translationFile->initFileSystem($splFileInfo, $this->l10nConfiguration->getAvailableL10nLanguages(), $this->localizationFactory);
@@ -64,17 +65,17 @@ class TranslationFileFactory implements SingletonInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return TranslationFile
      * @throws Exception
      */
     public function findByPath($path)
     {
         try {
-            $translationFile = $this->findByRelativPath($path);
+            $translationFile = $this->findByRelativePath($path);
         } catch (Exception $e) {
             $splFileInfo = new \SplFileInfo($path);
-            if ($splFileInfo->isFile() === FALSE) {
+            if ($splFileInfo->isFile() === false) {
                 throw new Exception('cannot create splFileInfo with path ' . $path, 1466093537);
             }
             $translationFile = new TranslationFile();
@@ -86,12 +87,12 @@ class TranslationFileFactory implements SingletonInterface
 
     /**
      * @param Search $search
-     * @return array<TranslationFile>
+     * @return TranslationFile[]
      * @throws Exception
      */
     public function findBySearch(Search $search)
     {
-        $translationFiles = array();
+        $translationFiles = [];
         $availableL10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
         if ($search->getLanguage() !== '') {
             $languages = array($search->getLanguage());
@@ -110,6 +111,4 @@ class TranslationFileFactory implements SingletonInterface
         }
         return $translationFiles;
     }
-
-
 }

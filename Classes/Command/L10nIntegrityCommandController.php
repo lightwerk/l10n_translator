@@ -25,13 +25,14 @@ namespace Lightwerk\L10nTranslator\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use Lightwerk\L10nTranslator\Domain\Model\Search;
+use TYPO3\CMS\Extbase\MVC\Controller\CommandController;
 
 /**
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class L10nIntegrityCommandController extends \TYPO3\CMS\Extbase\MVC\Controller\CommandController {
-
+class L10nIntegrityCommandController extends CommandController
+{
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory
      * @inject
@@ -62,5 +63,4 @@ class L10nIntegrityCommandController extends \TYPO3\CMS\Extbase\MVC\Controller\C
         }
         $this->outputLine($countDiffFiles . ' of ' . $countFiles . ' differ');
     }
-
 }

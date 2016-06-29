@@ -69,8 +69,8 @@ class TranslationFileServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCas
         public function setUp() {
                 parent::setUp();
                 $this->l10nDeFolder = PATH_site . 'typo3conf/l10n/de/demo/Resources/Private/Language';
-                if (is_dir($this->l10nDeFolder ) === FALSE) {
-                        mkdir($this->l10nDeFolder , 0777, TRUE);
+                if (is_dir($this->l10nDeFolder ) === false) {
+                        mkdir($this->l10nDeFolder , 0777, true);
                 }
 
                 $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
@@ -229,5 +229,4 @@ class TranslationFileServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCas
                 $content = file_get_contents($this->l10nDeFolder . '/de.test.xlf');
                 $this->assertXmlStringEqualsXmlString($expected, $content);
         }
-
 }
