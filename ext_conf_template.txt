@@ -1,0 +1,5 @@
+  # cat=basic/enable; type=string; label=CSV of l10nFiles handled by this extension (relative path to typo3conf/ext e.g. news/Resources/Private/Language/locallang.xlf)
+availableL10nFiles =
+
+  # cat=basic/enable; type=string; label=CSV of languages handled by this extension (e.g. de,dk)
+availableLanguages =

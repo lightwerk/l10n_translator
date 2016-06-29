@@ -1,0 +1,21 @@
+{
+	"name": "lw/l10n_translator",
+	"type": "typo3-cms-extension",
+	"description": "translate files in l10n",
+	"homepage": "http://typo3.org",
+	"license": ["GPL-2.0+"],
+	"version": "7.6",
+	"require": {
+		"typo3/cms-core": "~7.6"
+	},
+	"autoload": {
+		"psr-4": {
+			"Lightwerk\\L10nTranslator\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Lightwerk\\L10nTranslator\\Tests\\": "Tests"
+		}
+	}
+}

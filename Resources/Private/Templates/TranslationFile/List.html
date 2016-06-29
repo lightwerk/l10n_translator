@@ -1,0 +1,43 @@
+
+<f:layout name="Default" />
+
+<f:section name="content">
+
+<f:flashMessages />
+	<f:link.action class="btn btn-default" action="new" controller="Search" arguments="{search: {language: search.language, l10nFile: search.l10nFile, searchString: search.searchString}}">new Search</f:link.action>
+	<h2>Search for "{search.searchString}" in l10nFile "{search.l10nFile}" language "{search.language}"</h2>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_key" /></th>
+				<th><f:translate key="tx_l10ntranslator_domain_model_translation.language" /></th>
+				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_source" /></th>
+				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_target" /></th>
+			</tr>
+		</thead>
+		<tbody>
+			<f:for each="{translationFiles}" as="translationFile">
+				<f:for each="{translationFile.l10nTranslationFiles}" as="l10nTranslationFile">
+					<f:for each="{l10nTranslationFile.matchedTranslations}" as="translation">
+						<tr>
+							<td><f:format.crop maxCharacters="40">{translation.translationKey}</f:format.crop></td>
+							<td>{l10nTranslationFile.language}</td>
+							<td>{translation.translationSource}</td>
+							<td>
+								<form class="l10n-translation-translation">
+									<input type="hidden" name="key" value="{translation.translationKey}" />
+									<input type="text" name="target" value="{translation.translationTarget}" />
+									<input type="hidden" name="path" value="{translationFile.relativePath}" />
+									<input type="hidden" name="language" value="{l10nTranslationFile.language}" />
+									<input type="submit" value="Update" class="btn btn-default" />
+								</form>
+							</td>
+						</tr>
+					</f:for>
+				</f:for>
+			</f:for>
+		</tbody>
+	</table>
+
+</f:section>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-06-12T15:42:47Z" product-name="l10n_translator">
+		<header/>
+		<body>
+			<trans-unit id="tx_l10ntranslator_domain_model_translation">
+				<source>Translation</source>
+			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_translation.language">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_translation.translation_target">
+				<source>Translation Target</source>
+			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_translation.translation_source">
+				<source>Translation Source</source>
+			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_translation.translation_key">
+				<source>Translation Key</source>
+			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_search">
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_search.search_string">
+				<source>Search String</source>
+			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_search.language">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_search.l10nFile">
+				<source>l10nFile</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
