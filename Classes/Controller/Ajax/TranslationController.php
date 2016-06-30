@@ -45,27 +45,27 @@ class TranslationController
 {
 
     /**
-     * @var TranslationFileFactory
+     * @var \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory
      */
     protected $translationFileFactory;
 
     /**
-     * @var ObjectManager
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     protected $objectManager;
 
     /**
-     * @var L10nConfiguration
+     * @var \Lightwerk\L10nTranslator\Configuration\L10nConfiguration
      */
     protected $l10nConfiguration;
 
     /**
-     * @var TranslationFileWriterService
+     * @var \Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService
      */
     protected $translationFileWriterService;
 
     /**
-     * @var CacheManager
+     * @var \TYPO3\CMS\Core\Cache\CacheManager
      */
     protected $cacheManager;
 
