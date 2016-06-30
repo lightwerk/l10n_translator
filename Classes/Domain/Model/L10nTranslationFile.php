@@ -63,7 +63,7 @@ class L10nTranslationFile extends AbstractTranslationFile
         $this->relativePath = preg_replace('/' . $pathPart . '/', '', $this->getCleanPath());
         $parts = explode(DIRECTORY_SEPARATOR, $this->relativePath);
         if (count($parts) < 2) {
-            throw new Exception('invalide file in ' . $this->splFileInfo->getRealPath(), 1466171553);
+            throw new Exception('Invalid file in ' . $this->splFileInfo->getRealPath(), 1466171553);
         }
         $this->language = $parts[0];
         $this->extension = $parts[1];
@@ -78,7 +78,6 @@ class L10nTranslationFile extends AbstractTranslationFile
     {
         if ($search->getSearchString() !== '') {
             $this->matchedTranslations = $this->getTranslationsBySearchString($search->getSearchString());
-
         }
     }
     
@@ -89,5 +88,4 @@ class L10nTranslationFile extends AbstractTranslationFile
     {
         return $this->translationFile;
     }
-
 }

@@ -56,49 +56,49 @@ class TranslationFileService implements SingletonInterface
     protected $l10nConfiguration;
 
     /**
-     * @param string $xmlFile
+     * @param string $xlfFile
      * @param string $language
-     * @param boolean $createEmptyLables
+     * @param boolean $createEmptyLabels
      * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
      * @throws Exception
      * @return void
      */
-    public function xml2XlfByDefaultXlf($xlfFile, $language, $createEmptyLables = true)
+    public function xml2XlfByDefaultXlf($xlfFile, $language, $createEmptyLabels = true)
     {
         $translationFile = $this->translationFileFactory->findByPath($xlfFile);
-        $this->mergeXmlIntoDefault($translationFile, $language, $createEmptyLables);
+        $this->mergeXmlIntoDefault($translationFile, $language, $createEmptyLabels);
     }
 
     /**
      * @param string $xlfFile
-     * @param boolean $createEmptyLables
+     * @param boolean $createEmptyLabels
      * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
      * @throws Exception
      * @return void
      */
-    public function allXml2XlfByDefaultXlf($xlfFile, $createEmptyLables = true)
+    public function allXml2XlfByDefaultXlf($xlfFile, $createEmptyLabels = true)
     {
         $translationFile = $this->translationFileFactory->findByPath($xlfFile);
         $languages = $this->l10nConfiguration->getAvailableL10nLanguages();
         foreach ($languages as $language) {
-            $this->mergeXmlIntoDefault($translationFile, $language, $createEmptyLables);
+            $this->mergeXmlIntoDefault($translationFile, $language, $createEmptyLabels);
         }
     }
 
     /**
      * @param string $language
-     * @param bool $copyLables
+     * @param bool $copyLabels
      * @return void
      * @throws Exception
      */
-    public function createMissingFiles($language, $copyLables = true)
+    public function createMissingFiles($language, $copyLabels = true)
     {
         $search = new Search('', '', '');
         $translationFiles = $this->translationFileFactory->findBySearch($search);
         foreach ($translationFiles as $translationFile) {
             $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
-            if ($l10nTranslationFile->getSplFileInfo()->isFile() === FALSE) {
-                if ($copyLables === true) {
+            if ($l10nTranslationFile->getSplFileInfo()->isFile() === false) {
+                if ($copyLabels === true) {
                     foreach ($translationFile->getTranslations() as $translation) {
                         $l10nTranslationFile->addTranslation($translation);
                     }
@@ -134,16 +134,16 @@ class TranslationFileService implements SingletonInterface
 
     /**
      * @param TranslationFile $translationFile
-     * @param TranslationFile $defaultTranslationFile
-     * @param boolean $createEmptyLables
+     * @param string $language
+     * @param boolean $createEmptyLabels
      * @return void
      */
-    protected function mergeXmlIntoDefault(TranslationFile $translationFile, $language, $createEmptyLables)
+    protected function mergeXmlIntoDefault(TranslationFile $translationFile, $language, $createEmptyLabels)
     {
         $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
         $translations = $translationFile->getTranslations();
         foreach ($translations as $translation) {
-            if ($createEmptyLables === true && $l10nTranslationFile->getOwnTranslation($translation) === null) {
+            if ($createEmptyLabels === true && $l10nTranslationFile->getOwnTranslation($translation) === null) {
                 $l10nTranslationFile->addTranslation($translation);
             }
             $l10nTranslationFile->replaceTranslationSource($translation);
@@ -153,18 +153,18 @@ class TranslationFileService implements SingletonInterface
 
     /**
      * @param string $xmlFile
+     * @param string $language
      * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
      * @throws Exception
      * @return void
      */
     public function xml2Xlf($xmlFile, $language)
     {
-        $translationFile = $this->translationFileFactory->findByRelativPath($xmlFile);
+        $translationFile = $this->translationFileFactory->findByRelativePath($xmlFile);
         if ($language !== 'default') {
             $this->translationFileWriterService->writeTranslationXlf($translationFile->getL10nTranslationFile($language));
         } else {
             $this->translationFileWriterService->writeTranslationXlf($translationFile);
         }
     }
-
 }

@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
  */
 abstract class AbstractTranslationFile
 {
-
     /**
      * @var \splFileInfo
      */
@@ -55,14 +54,14 @@ abstract class AbstractTranslationFile
     protected $relativePath = '';
 
     /**
-     * @var array<Translation>
+     * @var Translation[]
      */
-    protected $translations = array();
+    protected $translations = [];
 
     /**
-     * @var array
+     * @var Translation[]
      */
-    protected $matchedTranslations = array();
+    protected $matchedTranslations = [];
 
 
     /**
@@ -78,7 +77,7 @@ abstract class AbstractTranslationFile
      */
     public function translationsToArray()
     {
-        $arr = array();
+        $arr = [];
         foreach ($this->getTranslations() as $translation) {
             $arr[$translation->getTranslationKey()] = $translation->getTranslationTarget();
         }
@@ -89,7 +88,8 @@ abstract class AbstractTranslationFile
      * @return void
      * @throws Exception
      */
-    protected function initTranslations(LocalizationFactory $localizationFactory) {
+    protected function initTranslations(LocalizationFactory $localizationFactory)
+    {
         $parsedData = $localizationFactory->getParsedData($this->getCleanPath(), $this->getLanguage());
         foreach ($parsedData[$this->getLanguage()] as $key => $labels) {
             if (isset($labels[0]['source']) === false) {
@@ -107,11 +107,11 @@ abstract class AbstractTranslationFile
 
     /**
      * @param string $searchString
-     * @return array<Translation>
+     * @return Translation[]
      */
     public function getTranslationsBySearchString($searchString)
     {
-        $filtered = array();
+        $filtered = [];
         foreach ($this->getTranslations() as $translation) {
             if ($translation->matchSearchString($searchString) === true) {
                 $filtered[] = $translation;
@@ -121,7 +121,7 @@ abstract class AbstractTranslationFile
     }
 
     /**
-     * @param $searchString
+     * @param string $searchString
      * @return bool
      */
     public function hasTranslationOfSearchString($searchString)
@@ -140,7 +140,7 @@ abstract class AbstractTranslationFile
      */
     public function replaceTranslationTarget(Translation $translation)
     {
-        $replaced = array();
+        $replaced = [];
         $currentTranslations = $this->getTranslations();
         foreach ($currentTranslations as $currentTranslation) {
             if ($currentTranslation->getTranslationKey() === $translation->getTranslationKey()) {
@@ -157,7 +157,7 @@ abstract class AbstractTranslationFile
      */
     public function replaceTranslationSource(Translation $translation)
     {
-        $replaced = array();
+        $replaced = [];
         $currentTranslations = $this->getTranslations();
         foreach ($currentTranslations as $currentTranslation) {
             if ($currentTranslation->getTranslationKey() === $translation->getTranslationKey()) {
@@ -217,7 +217,7 @@ abstract class AbstractTranslationFile
     }
 
     /**
-     * @return array
+     * @return Translation[]
      */
     public function getTranslations()
     {
@@ -233,12 +233,10 @@ abstract class AbstractTranslationFile
     }
 
     /**
-     * @return array
+     * @return Translation[]
      */
     public function getMatchedTranslations()
     {
         return $this->matchedTranslations;
     }
-
-
 }

@@ -27,9 +27,15 @@ namespace Lightwerk\L10nTranslator\Controller\Ajax;
  ***************************************************************/
 
 
+use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
+use Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory;
 use Lightwerk\L10nTranslator\Domain\Model\Translation;
+use Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * @package TYPO3
@@ -63,13 +69,12 @@ class TranslationController
      */
     protected $cacheManager;
 
-
     /**
      * @param array $params Array of parameters from the AJAX interface, currently unused
-     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      * @return void
      */
-    public function update($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL)
+    public function update($params = [], AjaxRequestHandler &$ajaxObj = null)
     {
 
         $this->initializeObjects();
@@ -104,11 +109,11 @@ class TranslationController
      */
     protected function initializeObjects()
     {
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        $this->l10nConfiguration = $this->objectManager->get('Lightwerk\L10nTranslator\Configuration\L10nConfiguration');
-        $this->translationFileFactory = $this->objectManager->get('Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory');
-        $this->translationFileWriterService = $this->objectManager->get('Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService');
-        $this->cacheManager = $this->objectManager->get('TYPO3\CMS\Core\Cache\CacheManager');
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->l10nConfiguration = $this->objectManager->get(L10nConfiguration::class);
+        $this->translationFileFactory = $this->objectManager->get(TranslationFileFactory::class);
+        $this->translationFileWriterService = $this->objectManager->get(TranslationFileWriterService::class);
+        $this->cacheManager = $this->objectManager->get(CacheManager::class);
     }
 
     /**
@@ -128,7 +133,7 @@ class TranslationController
     {
         $request = GeneralUtility::_POST();
         if (isset($request['language']) === false || isset($request['target']) === false || isset($request['key']) === false || isset($request['path']) === false) {
-            throw new Exception('invalide request', 1467175555);
+            throw new Exception('Invalid request.', 1467175555);
         }
         $language = $request['language'];
         $path = $request['path'];
@@ -137,18 +142,17 @@ class TranslationController
         $languages = $this->l10nConfiguration->getAvailableL10nLanguages();
         $l10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
         if (in_array($language, $languages) === false) {
-            throw new Exception('language not configured ' . $language, 1467175550);
+            throw new Exception('Language not configured: ' . $language, 1467175550);
         }
         if (in_array($path, $l10nFiles) === false) {
-            throw new Exception('path not configured ' . $path, 1467175551);
+            throw new Exception('Path not configured: ' . $path, 1467175551);
         }
         if ($target !== htmlspecialchars($target)) {
-            throw new Exception('html not allowed', 1467175552);
+            throw new Exception('HTML not allowed.', 1467175552);
         }
         if (empty($key) === true) {
-            throw new Exception('source may not be empty', 1467175554);
+            throw new Exception('Source may not be empty.', 1467175554);
         }
         return $request;
     }
-
 }

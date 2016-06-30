@@ -55,18 +55,18 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
-     * @param Search|NULL $search
+     * @param Search|null $search
      * @return void
      */
     public function newAction(Search $search = null)
     {
         $availableL10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
         $availableLanguages = $this->l10nConfiguration->getAvailableL10nLanguages();
-        $languages = array();
+        $languages = [];
         foreach ($availableLanguages as $availableLanguage) {
             $languages[$availableLanguage] = $availableLanguage;
         }
-        $l10nFiles = array();
+        $l10nFiles = [];
         foreach ($availableL10nFiles as $availableL10nFile) {
             $l10nFiles[$availableL10nFile] = $availableL10nFile;
         }

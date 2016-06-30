@@ -28,6 +28,7 @@ namespace Lightwerk\L10nTranslator\Domain\Service;
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class Exception extends \Lightwerk\L10nTranslator\Exception {
+class Exception extends \Lightwerk\L10nTranslator\Exception
+{
 
 }

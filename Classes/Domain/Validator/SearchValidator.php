@@ -41,10 +41,10 @@ class SearchValidator extends AbstractValidator
      * @param mixed $value
      * @return boolean
      */
-    public function isValid($value) {
+    public function isValid($value)
+    {
         if (strlen($value->getSearchString()) < 3 && $value->getL10nFile() === '' and $value->getLanguage() === '') {
-            $this->addError('empty Search is not allowed', 1466595470);
+            $this->addError('Empty Search is not allowed', 1466595470);
         }
     }
-
 }

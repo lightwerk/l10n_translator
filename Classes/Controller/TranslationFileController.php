@@ -27,6 +27,7 @@ namespace Lightwerk\L10nTranslator\Controller;
  ***************************************************************/
 
 use Lightwerk\L10nTranslator\Domain\Model\Search;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * @package TYPO3
@@ -47,14 +48,13 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
      */
     public function listAction(Search $search)
     {
+        $translationFiles = [];
         try {
             $translationFiles = $this->translationFileFactory->findBySearch($search);
         } catch (\Lightwerk\L10nTranslator\Exception $e) {
-            $this->addErrorFlashMessage($e->getMessage() . ' - ' . $e->getCode());
+            $this->addFlashMessage($e->getMessage() . ' - ' . $e->getCode(), '', FlashMessage::ERROR);
         }
         $this->view->assign('search', $search);
         $this->view->assign('translationFiles', $translationFiles);
     }
-
-
 }

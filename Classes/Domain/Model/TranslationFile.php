@@ -37,10 +37,9 @@ class TranslationFile extends AbstractTranslationFile
     const FOLDER = 'typo3conf/ext';
 
     /**
-     * @var array <L10nTranslationFile>
+     * @var L10nTranslationFile[]
      */
-    protected $l10nTranslationFiles = array();
-
+    protected $l10nTranslationFiles = [];
 
     /**
      * @param \SplFileInfo $splFileInfo
@@ -49,14 +48,15 @@ class TranslationFile extends AbstractTranslationFile
      * @return void
      * @throws Exception
      */
-    public function initFileSystem(\SplFileInfo $splFileInfo, array $languages, LocalizationFactory $localizationFactory) {
+    public function initFileSystem(\SplFileInfo $splFileInfo, array $languages, LocalizationFactory $localizationFactory)
+    {
         $this->splFileInfo = $splFileInfo;
 
         $pathPart = str_replace('/', '\/', PATH_site . self::FOLDER . DIRECTORY_SEPARATOR);
         $this->relativePath = preg_replace('/' . $pathPart . '/', '', $this->getCleanPath());
         $parts = explode(DIRECTORY_SEPARATOR, $this->relativePath);
         if (count($parts) < 1) {
-            throw new Exception('invalide file in ' . $this->splFileInfo->getRealPath(), 1466171558);
+            throw new Exception('Invalid file in ' . $this->splFileInfo->getRealPath(), 1466171558);
         }
         $this->language = 'default';
         $this->extension = $parts[0];
@@ -71,23 +71,24 @@ class TranslationFile extends AbstractTranslationFile
     }
 
     /**
-     * @param $language
+     * @param string $language
      * @return L10nTranslationFile
      * @throws Exception
      */
     public function getL10nTranslationFile($language)
     {
         if (isset($this->l10nTranslationFiles[$language]) === false) {
-            throw new Exception('l10nTranslationFile of language ' . $language . ' not exists ', 1466587863);
+            throw new Exception('l10nTranslationFile of language ' . $language . ' does not exist.', 1466587863);
         }
         return $this->l10nTranslationFiles[$language];
     }
 
     /**
-     * @param $language
+     * @param string $language
      * @return string
      */
-    public function getL10nTranslationFilePath($language) {
+    public function getL10nTranslationFilePath($language)
+    {
         $parts = explode(DIRECTORY_SEPARATOR, $this->getRelativePath());
         array_pop($parts);
         $path = PATH_site . L10nTranslationFile::FOLDER . DIRECTORY_SEPARATOR . $language;
@@ -109,12 +110,10 @@ class TranslationFile extends AbstractTranslationFile
     }
 
     /**
-     * @return array<L10nTranslationFile>
+     * @return L10nTranslationFile[]
      */
     public function getL10nTranslationFiles()
     {
         return $this->l10nTranslationFiles;
     }
-
-
 }
