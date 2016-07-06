@@ -67,12 +67,62 @@ class Translation
     }
 
     /**
-     * @param string $searchString
+     * @param Search $search
      * @return bool
      */
-    public function matchSearchString($searchString)
+    protected function exactMatchSearch(Search $search)
     {
-        return strpos($this->getTranslationTarget(), $searchString) !== false;
+        $searchString = $search->getSearchString();
+        if ($this->getTranslationTarget() === $searchString) {
+            return true;
+        } elseif ($search->getIncludeSource() === true) {
+            return $this->getTranslationSource() === $searchString;
+        }
+        return false;
+    }
+
+    /**
+     * @param Search $search
+     * @return bool
+     */
+    protected function caseInSensitiveMatchSearch(Search $search)
+    {
+        $searchString = $search->getSearchString();
+        if (strpos(strtolower($this->getTranslationTarget()), strtolower($searchString)) !== false) {
+            return true;
+        } elseif ($search->getIncludeSource() === true) {
+            return strpos(strtolower($this->getTranslationSource()), strtolower($searchString)) !== false;
+        }
+        return false;
+    }
+
+    /**
+     * @param Search $search
+     * @return bool
+     */
+    protected function caseSensitiveMatchSearch(Search $search)
+    {
+        $searchString = $search->getSearchString();
+        if (strpos($this->getTranslationTarget(), $searchString) !== false) {
+            return true;
+        } elseif ($search->getIncludeSource() === true) {
+            return strpos($this->getTranslationSource(), $searchString) !== false;
+        }
+        return false;
+    }
+
+    /**
+     * @param Search $search
+     * @return bool
+     */
+    public function matchSearch(Search $search)
+    {
+        if ($search->getExactMatch() === true) {
+            return $this->exactMatchSearch($search);
+        } elseif ($search->getCaseInSensitive() === true) {
+            return $this->caseInSensitiveMatchSearch($search);
+        }
+        return $this->caseSensitiveMatchSearch($search);
     }
 
     /**

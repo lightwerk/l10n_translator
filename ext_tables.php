@@ -10,7 +10,6 @@ if (TYPO3_MODE === 'BE') {
         'translator',
         '',
         array(
-            'Search' => 'new',
             'TranslationFile' => 'list'
         ),
         array(

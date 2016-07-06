@@ -77,7 +77,7 @@ class L10nTranslationFile extends AbstractTranslationFile
     public function applySearch(Search $search)
     {
         if ($search->getSearchString() !== '') {
-            $this->matchedTranslations = $this->getTranslationsBySearchString($search->getSearchString());
+            $this->matchedTranslations = $this->getTranslationsBySearch($search);
         }
     }
     

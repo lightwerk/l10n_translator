@@ -43,16 +43,52 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
     protected $translationFileFactory;
 
     /**
+     * @var \Lightwerk\L10nTranslator\Configuration\L10nConfiguration
+     * @inject
+     */
+    protected $l10nConfiguration;
+
+    /**
+     * @return void
+     */
+    protected function initializeListAction() {
+        parent::initializeAction();
+        if ($this->request->hasArgument('search')) {
+            $propertyMappingConfiguration = $this->arguments['search']->getPropertyMappingConfiguration();
+            $propertyMappingConfiguration->allowProperties('language');
+            $propertyMappingConfiguration->allowProperties('l10nFile');
+            $propertyMappingConfiguration->allowProperties('searchString');
+            $propertyMappingConfiguration->allowProperties('exactMatch');
+            $propertyMappingConfiguration->allowProperties('caseInSensitive');
+            $propertyMappingConfiguration->allowProperties('includeSource');
+        }
+    }
+
+    /**
      * @param Search $search
      * @return void
      */
-    public function listAction(Search $search)
+    public function listAction(Search $search = null)
     {
         $translationFiles = [];
-        try {
-            $translationFiles = $this->translationFileFactory->findBySearch($search);
-        } catch (\Lightwerk\L10nTranslator\Exception $e) {
-            $this->addFlashMessage($e->getMessage() . ' - ' . $e->getCode(), '', FlashMessage::ERROR);
+        $availableL10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
+        $availableLanguages = $this->l10nConfiguration->getAvailableL10nLanguages();
+        $languages = [];
+        foreach ($availableLanguages as $availableLanguage) {
+            $languages[$availableLanguage] = $availableLanguage;
+        }
+        $l10nFiles = [];
+        foreach ($availableL10nFiles as $availableL10nFile) {
+            $l10nFiles[$availableL10nFile] = $availableL10nFile;
+        }
+        $this->view->assign('l10nFiles', $l10nFiles);
+        $this->view->assign('languages', $languages);
+        if ($search !== null) {
+            try {
+                $translationFiles = $this->translationFileFactory->findBySearch($search);
+            } catch (\Lightwerk\L10nTranslator\Exception $e) {
+                $this->addFlashMessage($e->getMessage() . ' - ' . $e->getCode(), '', FlashMessage::ERROR);
+            }
         }
         $this->view->assign('search', $search);
         $this->view->assign('translationFiles', $translationFiles);
