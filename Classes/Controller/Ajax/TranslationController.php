@@ -147,9 +147,6 @@ class TranslationController
         if (in_array($path, $l10nFiles) === false) {
             throw new Exception('Path not configured: ' . $path, 1467175551);
         }
-        if ($target !== htmlspecialchars($target)) {
-            throw new Exception('HTML not allowed.', 1467175552);
-        }
         if (empty($key) === true) {
             throw new Exception('Source may not be empty.', 1467175554);
         }
