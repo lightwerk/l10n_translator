@@ -51,7 +51,8 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
     /**
      * @return void
      */
-    protected function initializeListAction() {
+    protected function initializeListAction()
+    {
         parent::initializeAction();
         if ($this->request->hasArgument('search')) {
             $propertyMappingConfiguration = $this->arguments['search']->getPropertyMappingConfiguration();
