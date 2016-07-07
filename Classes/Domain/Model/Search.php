@@ -51,7 +51,7 @@ class Search
     /**
      * @var bool
      */
-    protected $caseInSensitive = false;
+    protected $caseSensitive = false;
 
     /**
      * @var bool
@@ -67,16 +67,16 @@ class Search
      * @param string $searchString
      * @param string $language
      * @param string $l10nFile
-     * @param bool $caseInSensitive
+     * @param bool $caseSensitive
      * @param bool $exactMatch
      * @param bool $includeSource
      */
-    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseInSensitive = false, $exactMatch = false, $includeSource = false)
+    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseSensitive = false, $exactMatch = false, $includeSource = false)
     {
         $this->searchString = $searchString;
         $this->language = $language;
         $this->l10nFile = $l10nFile;
-        $this->caseInSensitive = $caseInSensitive;
+        $this->caseSensitive = $caseSensitive;
         $this->exactMatch = $exactMatch;
         $this->includeSource = $includeSource;
     }
@@ -110,9 +110,9 @@ class Search
     /**
      * @return boolean
      */
-    public function getCaseInSensitive()
+    public function getCaseSensitive()
     {
-        return $this->caseInSensitive;
+        return $this->caseSensitive;
     }
 
     /**

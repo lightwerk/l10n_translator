@@ -75,7 +75,8 @@ class Translation
         $searchString = $search->getSearchString();
         if ($this->getTranslationTarget() === $searchString) {
             return true;
-        } elseif ($search->getIncludeSource() === true) {
+        }
+        if ($search->getIncludeSource() === true) {
             return $this->getTranslationSource() === $searchString;
         }
         return false;
@@ -90,7 +91,8 @@ class Translation
         $searchString = $search->getSearchString();
         if (strpos(strtolower($this->getTranslationTarget()), strtolower($searchString)) !== false) {
             return true;
-        } elseif ($search->getIncludeSource() === true) {
+        }
+        if ($search->getIncludeSource() === true) {
             return strpos(strtolower($this->getTranslationSource()), strtolower($searchString)) !== false;
         }
         return false;
@@ -105,7 +107,8 @@ class Translation
         $searchString = $search->getSearchString();
         if (strpos($this->getTranslationTarget(), $searchString) !== false) {
             return true;
-        } elseif ($search->getIncludeSource() === true) {
+        }
+        if ($search->getIncludeSource() === true) {
             return strpos($this->getTranslationSource(), $searchString) !== false;
         }
         return false;
@@ -119,10 +122,11 @@ class Translation
     {
         if ($search->getExactMatch() === true) {
             return $this->exactMatchSearch($search);
-        } elseif ($search->getCaseInSensitive() === true) {
-            return $this->caseInSensitiveMatchSearch($search);
         }
-        return $this->caseSensitiveMatchSearch($search);
+        if ($search->getCaseSensitive() === true) {
+            return $this->caseSensitiveMatchSearch($search);
+        }
+        return $this->caseInSensitiveMatchSearch($search);
     }
 
     /**
