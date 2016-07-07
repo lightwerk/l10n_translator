@@ -106,14 +106,14 @@ abstract class AbstractTranslationFile
 
 
     /**
-     * @param string $searchString
+     * @param Search $search
      * @return Translation[]
      */
-    public function getTranslationsBySearchString($searchString)
+    public function getTranslationsBySearch(Search $search)
     {
         $filtered = [];
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->matchSearchString($searchString) === true) {
+            if ($translation->matchSearch($search) === true) {
                 $filtered[] = $translation;
             }
         }
@@ -121,13 +121,13 @@ abstract class AbstractTranslationFile
     }
 
     /**
-     * @param string $searchString
+     * @param Search $search
      * @return bool
      */
-    public function hasTranslationOfSearchString($searchString)
+    public function hasTranslationOfSearch(Search $search)
     {
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->matchSearchString($searchString) === true) {
+            if ($translation->matchSearch($search) === true) {
                 return true;
             }
         }

@@ -49,15 +49,36 @@ class Search
     protected $l10nFile = '';
 
     /**
+     * @var bool
+     */
+    protected $caseInSensitive = false;
+
+    /**
+     * @var bool
+     */
+    protected $exactMatch = false;
+
+    /**
+     * @var bool
+     */
+    protected $includeSource = false;
+
+    /**
      * @param string $searchString
      * @param string $language
      * @param string $l10nFile
+     * @param bool $caseInSensitive
+     * @param bool $exactMatch
+     * @param bool $includeSource
      */
-    public function __construct($searchString = '', $language = '', $l10nFile = '')
+    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseInSensitive = false, $exactMatch = false, $includeSource = false)
     {
         $this->searchString = $searchString;
         $this->language = $language;
         $this->l10nFile = $l10nFile;
+        $this->caseInSensitive = $caseInSensitive;
+        $this->exactMatch = $exactMatch;
+        $this->includeSource = $includeSource;
     }
 
     /**
@@ -84,5 +105,29 @@ class Search
     public function getL10nFile()
     {
         return $this->l10nFile;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCaseInSensitive()
+    {
+        return $this->caseInSensitive;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getExactMatch()
+    {
+        return $this->exactMatch;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIncludeSource()
+    {
+        return $this->includeSource;
     }
 }

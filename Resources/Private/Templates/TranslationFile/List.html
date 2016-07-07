@@ -3,27 +3,90 @@
 
 <f:section name="content">
 
-<f:flashMessages />
-	<f:link.action class="btn btn-default" action="new" controller="Search" arguments="{search: {language: search.language, l10nFile: search.l10nFile, searchString: search.searchString}}">new Search</f:link.action>
-	<h2>Search for "{search.searchString}" in l10nFile "{search.l10nFile}" language "{search.language}"</h2>
+	<f:flashMessages />
+	<f:render partial="FormErrors" />
+	<f:form class="form-horizontal" action="list"  controller="TranslationFile" method="POST" name="search" object="{search}">
 
-	<table class="table">
-		<thead>
+		<div class="row">
+			<div class="col-sm-6">
+				<h2><f:translate key="search.heading" /></h2>
+				<div class="form-group row">
+					<label for="searchString" class="col-sm-4 control-label">
+						<f:translate key="tx_l10ntranslator_domain_model_search.search_string" />
+					</label>
+					<div class="col-sm-6">
+						<f:form.textfield class="form-control" id="searchString" property="searchString" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="language" class="col-sm-4 control-label">
+						<f:translate key="tx_l10ntranslator_domain_model_search.language" />
+					</label>
+					<div class="col-sm-6">
+						<f:form.select class="form-control" id="language" options="{languages}" property="language" prependOptionLabel="{f:translate(key: 'search.all')}" prependOptionValue="" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="l10nFile" class="col-sm-4 control-label">
+						<f:translate key="tx_l10ntranslator_domain_model_search.l10nFile" />
+					</label>
+					<div class="col-sm-6">
+						<f:form.select id="l10nFile" class="form-control" property="l10nFile" options="{l10nFiles}" prependOptionLabel="{f:translate(key: 'search.all')}" prependOptionValue=""/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-6">
+						<f:form.submit value="{f:translate(key: 'tx_l10ntranslator_domain_model_search')}" class="btn btn-default"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h2><f:translate key="search.extendedParameters" /></h2>
+				<div class="form-group row checkbox">
+					<label for="caseInSensitive" class="col-sm-6 col-sm-offset-1">
+						<f:form.checkbox id="caseInSensitive" property="caseInSensitive" value="1"/>
+						<f:translate key="tx_l10ntranslator_domain_model_search.caseInSensitive" />
+					</label>
+				</div>
+				<div class="form-group row checkbox">
+					<label for="exactMatch" class="col-sm-6 col-sm-offset-1">
+						<f:form.checkbox id="exactMatch" property="exactMatch" value="1"/>
+						<f:translate key="tx_l10ntranslator_domain_model_search.exactMatch" />
+					</label>
+				</div>
+				<div class="form-group row checkbox">
+					<label for="includeSource" class="col-sm-6 col-sm-offset-1">
+						<f:form.checkbox id="includeSource" property="includeSource" value="1"/>
+						<f:translate key="tx_l10ntranslator_domain_model_search.includeSource" />
+					</label>
+				</div>
+			</div>
+		</div>
+
+	</f:form>
+
+	<f:if condition="{translationFiles}">
+		<table class="table">
+			<thead>
 			<tr>
 				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_key" /></th>
 				<th><f:translate key="tx_l10ntranslator_domain_model_translation.language" /></th>
 				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_source" /></th>
 				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_target" /></th>
 			</tr>
-		</thead>
-		<tbody>
+			</thead>
+			<tbody>
 			<f:for each="{translationFiles}" as="translationFile">
 				<f:for each="{translationFile.l10nTranslationFiles}" as="l10nTranslationFile">
 					<f:for each="{l10nTranslationFile.matchedTranslations}" as="translation">
 						<tr>
-							<td><f:format.crop maxCharacters="40">{translation.translationKey}</f:format.crop></td>
+							<td><f:format.crop maxCharacters="200">{translation.translationKey}</f:format.crop></td>
 							<td>{l10nTranslationFile.language}</td>
-							<td>{translation.translationSource}</td>
+							<td>
+								<f:link.action action="list" arguments="{search: {exactMatch: 1, l10nFile: translationFile.relativePath, searchString: translation.translationSource, includeSource: 1}}">
+									{translation.translationSource}
+								</f:link.action>
+							</td>
 							<td>
 								<form class="l10n-translation-translation">
 									<input type="hidden" name="key" value="{translation.translationKey}" />
@@ -37,7 +100,8 @@
 					</f:for>
 				</f:for>
 			</f:for>
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</f:if>
 
 </f:section>
