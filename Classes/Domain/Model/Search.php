@@ -130,4 +130,28 @@ class Search
     {
         return $this->includeSource;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasLanguage()
+    {
+        return $this->language !== '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasL10nFile()
+    {
+        return $this->l10nFile !== '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSearchString()
+    {
+        return $this->searchString !== '';
+    }
 }

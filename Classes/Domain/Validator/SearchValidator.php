@@ -26,6 +26,7 @@ namespace Lightwerk\L10nTranslator\Domain\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Lightwerk\L10nTranslator\Domain\Model\Search;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
@@ -38,12 +39,12 @@ class SearchValidator extends AbstractValidator
     /**
      * isValid
      *
-     * @param mixed $value
+     * @param Search $value
      * @return boolean
      */
     public function isValid($value)
     {
-        if (strlen($value->getSearchString()) < 3 && $value->getL10nFile() === '' and $value->getLanguage() === '') {
+        if (strlen($value->getSearchString()) < 3 && $value->hasL10nFile() === false && $value->hasLanguage() === false) {
             $this->addError('Empty Search is not allowed', 1466595470);
         }
     }

@@ -102,7 +102,7 @@ class TranslationFile extends AbstractTranslationFile
      */
     public function applySearch(Search $search)
     {
-        if ($search->getSearchString() !== '') {
+        if ($search->hasSearchString()) {
             foreach ($this->getL10nTranslationFiles() as $l10nTranslationFile) {
                 $l10nTranslationFile->applySearch($search);
             }
