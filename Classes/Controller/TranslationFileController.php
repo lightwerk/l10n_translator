@@ -27,6 +27,7 @@ namespace Lightwerk\L10nTranslator\Controller;
  ***************************************************************/
 
 use Lightwerk\L10nTranslator\Domain\Model\Search;
+use Lightwerk\L10nTranslator\Utility\StringUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
@@ -49,9 +50,16 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
     protected $l10nConfiguration;
 
     /**
+     * @var \Lightwerk\L10nTranslator\Utility\StringUtility
+     * @inject
+     */
+    protected $stringUtility;
+
+    /**
      * @return void
      */
-    protected function initializeListAction() {
+    protected function initializeListAction()
+    {
         parent::initializeAction();
         if ($this->request->hasArgument('search')) {
             $propertyMappingConfiguration = $this->arguments['search']->getPropertyMappingConfiguration();
@@ -79,7 +87,7 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
         }
         $l10nFiles = [];
         foreach ($availableL10nFiles as $availableL10nFile) {
-            $l10nFiles[$availableL10nFile] = $availableL10nFile;
+            $l10nFiles[$availableL10nFile] = $this->stringUtility->stripPathToLanguageFile($availableL10nFile);
         }
         $this->view->assign('l10nFiles', $l10nFiles);
         $this->view->assign('languages', $languages);

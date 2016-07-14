@@ -30,8 +30,8 @@
 			<trans-unit id="tx_l10ntranslator_domain_model_search.l10nFile">
 				<source>l10nFile</source>
 			</trans-unit>
-			<trans-unit id="tx_l10ntranslator_domain_model_search.caseInSensitive">
-				<source>Case InSensitive</source>
+			<trans-unit id="tx_l10ntranslator_domain_model_search.caseSensitive">
+				<source>Case sensitive</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_search.exactMatch">
 				<source>Exact Match</source>
@@ -43,7 +43,7 @@
 				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="search.extendedParameters">
-				<source>extended Parameters</source>
+				<source>Search Config</source>
 			</trans-unit>
 			<trans-unit id="search.all">
 				<source>All</source>

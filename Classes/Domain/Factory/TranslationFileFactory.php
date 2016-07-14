@@ -93,15 +93,8 @@ class TranslationFileFactory implements SingletonInterface
     public function findBySearch(Search $search)
     {
         $translationFiles = [];
-        $availableL10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
-        if ($search->getLanguage() !== '') {
-            $languages = array($search->getLanguage());
-        } else {
-            $languages = $this->l10nConfiguration->getAvailableL10nLanguages();
-        }
-        if ($search->getL10nFile() !== '') {
-            $availableL10nFiles = array($search->getL10nFile());
-        }
+        $languages = $search->hasLanguage() ? [$search->getLanguage()] : $this->l10nConfiguration->getAvailableL10nLanguages();
+        $availableL10nFiles = $search->hasL10nFile() ? [$search->getL10nFile()] : $this->l10nConfiguration->getAvailableL10nFiles();
         foreach ($availableL10nFiles as $availableL10nFile) {
             $path = PATH_site . TranslationFile::FOLDER . DIRECTORY_SEPARATOR . $availableL10nFile;
             $translationFile = new TranslationFile();

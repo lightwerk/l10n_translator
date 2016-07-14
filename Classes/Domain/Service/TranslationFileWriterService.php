@@ -96,8 +96,9 @@ class TranslationFileWriterService implements SingletonInterface
                 throw new Exception('Cannot create directory file ' . $translationFile->getSplFileInfo()->getPath() . '. Error: ' . $e->getMessage(), 1466440410);
             }
         }
-
-        $res = GeneralUtility::writeFile(str_replace('.xml', '.xlf', $translationFile->getCleanPath()), implode(LF, $xmlFile));
+        $xml = implode(LF, $xmlFile);
+        $this->assureValidXml($xml, $translationFile);
+        $res = GeneralUtility::writeFile(str_replace('.xml', '.xlf', $translationFile->getCleanPath()), $xml);
         if ($res === false) {
             throw new Exception('cannot write file ' . $translationFile->getCleanPath(), 1466440408);
         }
@@ -122,9 +123,26 @@ class TranslationFileWriterService implements SingletonInterface
 
         $xmlFile = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>'.chr(10);
         $xmlFile .= GeneralUtility::array2xml($translationFile->translationsToArray(), '', 0, 'T3locallangExt', 0, $xmlOptions);
-        $res = GeneralUtility::writeFile($translationFile->getCleanPath(), implode(LF, $xmlFile));
+        $xml = implode(LF, $xmlFile);
+        $this->assureValidXml($xml, $translationFile);
+        $res = GeneralUtility::writeFile($translationFile->getCleanPath(), $xml);
         if ($res === false) {
             throw new Exception('cannot write file ' . $translationFile->getCleanPath(), 1466440409);
+        }
+    }
+
+    /**
+     * @param string $xml
+     * @param AbstractTranslationFile $translationFile
+     * @return void
+     * @throws \Lightwerk\L10nTranslator\Domain\Service\Exception
+     */
+    protected function assureValidXml($xml, AbstractTranslationFile $translationFile)
+    {
+        try {
+            $xmlObject = new \SimpleXMLElement($xml);
+        } catch (\Exception $e) {
+            throw new Exception('invalide XML ' . $translationFile->getCleanPath(), 1468492172);
         }
     }
 }
