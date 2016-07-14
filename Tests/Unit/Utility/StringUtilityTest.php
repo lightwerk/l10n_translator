@@ -34,7 +34,8 @@ class StringUtilityTest extends UnitTestCase
      */
     public function stripPathToLanguageFile($fullPath, $expectation)
     {
-        $this->assertSame($expectation, StringUtility::stripPathToLanguageFile($fullPath));
+        $stringUtility = new StringUtility();
+        $this->assertSame($expectation, $stringUtility->stripPathToLanguageFile($fullPath));
     }
 
     /**

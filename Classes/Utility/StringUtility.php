@@ -14,7 +14,7 @@ namespace Lightwerk\L10nTranslator\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Class StringUtility
@@ -23,7 +23,7 @@ namespace Lightwerk\L10nTranslator\Utility;
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class StringUtility
+class StringUtility implements SingletonInterface
 {
 
     /**
@@ -36,7 +36,7 @@ class StringUtility
      * @param string $fullPath
      * @return string
      */
-    public static function stripPathToLanguageFile($fullPath)
+    public function stripPathToLanguageFile($fullPath)
     {
         $pathsToStrip = [
             '/Resources/Private/Language/',
