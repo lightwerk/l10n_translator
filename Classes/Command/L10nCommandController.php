@@ -57,7 +57,12 @@ class L10nCommandController extends CommandController
      * @inject
      */
     protected $l10nConfiguration;
-    
+
+    /**
+     * @var \TYPO3\CMS\Core\Cache\CacheManager
+     * @inject
+     */
+    protected $cacheManager;
 
     /**
      * @param string $xlfFile
@@ -67,6 +72,7 @@ class L10nCommandController extends CommandController
     public function allXml2XlfByDefaultXlfCommand($xlfFile, $createEmptyLabels = false)
     {
         $this->translationFileService->allXml2XlfByDefaultXlf($xlfFile, $createEmptyLabels);
+        $this->flushCache();
     }
 
     /**
@@ -78,6 +84,7 @@ class L10nCommandController extends CommandController
     public function xml2XlfByDefaultXlfCommand($xlfFile, $language, $createEmptyLabels = false)
     {
         $this->translationFileService->xml2XlfByDefaultXlf($xlfFile, $language, $createEmptyLabels);
+        $this->flushCache();
     }
 
     /**
@@ -88,17 +95,42 @@ class L10nCommandController extends CommandController
     public function createMissingFilesCommand($language, $copyLabels = true)
     {
         $this->translationFileService->createMissingFiles($language, $copyLabels);
+        $this->flushCache();
     }
 
     /**
-     * @param string $xlfFile
+     * @param string $l10nFile
      * @param string $language
-     * @param string $altLanguage
+     * @param string $sourceLanguage
      * @return void
      */
-    public function overwriteWithAltLanguageCommand($xlfFile, $language, $altLanguage)
+    public function overwriteWithLanguageCommand($l10nFile, $language, $sourceLanguage)
     {
-        $this->translationFileService->overwriteWithAltLanguage($xlfFile, $language, $altLanguage);
+        $this->translationFileService->overwriteWithLanguage($l10nFile, $language, $sourceLanguage);
+        $this->flushCache();
+    }
+
+    /**
+     * @param string $l10nFile
+     * @param string $language
+     * @param string $sourceLanguage
+     * @return void
+     */
+    public function createMissingLabelsCommand($l10nFile, $language, $sourceLanguage = 'default')
+    {
+        $this->translationFileService->createMissingLabels($l10nFile, $language, $sourceLanguage);
+        $this->flushCache();
+    }
+
+    /**
+     * @param string $language
+     * @param string $sourceLanguage
+     * @return void
+     */
+    public function createAllMissingLabelsCommand($language, $sourceLanguage = 'default')
+    {
+        $this->translationFileService->createAllMissingLabels($language, $sourceLanguage);
+        $this->flushCache();
     }
 
 
@@ -120,5 +152,14 @@ class L10nCommandController extends CommandController
                 }
             }
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function flushCache()
+    {
+        $cacheFrontend = $this->cacheManager->getCache('l10n');
+        $cacheFrontend->flush();
     }
 }

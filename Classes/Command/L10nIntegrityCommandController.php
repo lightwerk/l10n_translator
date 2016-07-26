@@ -40,27 +40,67 @@ class L10nIntegrityCommandController extends CommandController
     protected $translationFileFactory;
 
     /**
+     * @var \TYPO3\CMS\Core\Cache\CacheManager
+     * @inject
+     */
+    protected $cacheManager;
+
+    /**
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function listCommand()
     {
+        $this->flushCache();
         $search = new Search('', '', '');
         $translationFiles = $this->translationFileFactory->findBySearch($search);
         $countFiles = 0;
         $countDiffFiles = 0;
         foreach ($translationFiles as $translationFile) {
             $countTranslations = count($translationFile->getTranslations());
+            $this->outputLine($countTranslations . ' Translations for l10nFile ' . $translationFile->getRelativePath());
             foreach ($translationFile->getL10nTranslationFiles() as $l10nTranslationFile) {
                 $countFiles ++;
                 $countL10nTranslations = count($l10nTranslationFile->getTranslations());
                 $diff = $countTranslations - $countL10nTranslations;
                 if ($diff !== 0) {
                     $countDiffFiles ++;
-                    $this->outputLine($diff . ' ' . $l10nTranslationFile->getCleanPath());
+                    $this->outputLine('WARNING: ' . $diff . ' labels missing for ' . $l10nTranslationFile->getLanguage());
                 }
             }
         }
-        $this->outputLine($countDiffFiles . ' of ' . $countFiles . ' differ');
+        if ($countDiffFiles > 0) {
+            $this->outputLine('WARNING: ' . $countDiffFiles . ' of ' . $countFiles . ' differ');
+        }
+    }
+
+    /**
+     * @param string $l10nFile
+     * @param string $language
+     * @return void
+     */
+    public function showCommand($l10nFile, $language)
+    {
+        $this->flushCache();
+        $search = new Search('', $language, $l10nFile);
+        $translationFiles = $this->translationFileFactory->findBySearch($search);
+        foreach ($translationFiles as $translationFile) {
+            foreach ($translationFile->getL10nTranslationFiles() as $l10nTranslationFile) {
+                foreach ($translationFile->getTranslations() as $translation) {
+                    if ($l10nTranslationFile->hasOwnTranslation($translation) === false) {
+                        $this->outputLine('WARNING: ' . $translation->getTranslationKey() . ' - ' . $translation->getTranslationSource());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function flushCache()
+    {
+        $cacheFrontend = $this->cacheManager->getCache('l10n');
+        $cacheFrontend->flush();
     }
 }

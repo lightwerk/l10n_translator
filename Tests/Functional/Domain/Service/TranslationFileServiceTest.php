@@ -26,7 +26,6 @@ namespace Lightwerk\L10nTranslator\Tests\Functional\Domain\Service;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use org\bovigo\vfs\vfsStream;
 
 /**
  * @package TYPO3
@@ -39,11 +38,6 @@ class TranslationFileServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCas
          * @var \Lightwerk\L10nTranslator\Domain\Service\TranslationFileService
          */
         protected $translationFileService;
-
-        /**
-         * @var \org\bovigo\vfs\vfsStreamDirectory
-         */
-        protected $fsRoot;
 
         /**
          * @var array
@@ -66,7 +60,8 @@ class TranslationFileServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCas
         /**
          * @return void
          */
-        public function setUp() {
+        public function setUp()
+        {
                 parent::setUp();
                 $this->l10nDeFolder = PATH_site . 'typo3conf/l10n/de/demo/Resources/Private/Language';
                 if (is_dir($this->l10nDeFolder ) === false) {

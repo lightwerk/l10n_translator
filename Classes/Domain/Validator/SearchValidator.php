@@ -6,7 +6,7 @@ namespace Lightwerk\L10nTranslator\Domain\Validator;
  *
  *  Copyright notice
  *
- *  (c) 2016 Achim Fritz <af@achimfritz.de>, Lightwerk GmbH
+ *  (c) 2016 Achim Fritz <af@lightwerk.com>, Lightwerk GmbH
  *
  *  All rights reserved
  *

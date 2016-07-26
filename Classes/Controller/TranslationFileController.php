@@ -5,7 +5,7 @@ namespace Lightwerk\L10nTranslator\Controller;
  *
  *  Copyright notice
  *
- *  (c) 2016 Achim Fritz <af@achimfritz.de>, Lightwerk GmbH
+ *  (c) 2016 Achim Fritz <af@lightwerk.com>, Lightwerk GmbH
  *
  *  All rights reserved
  *
@@ -27,7 +27,6 @@ namespace Lightwerk\L10nTranslator\Controller;
  ***************************************************************/
 
 use Lightwerk\L10nTranslator\Domain\Model\Search;
-use Lightwerk\L10nTranslator\Utility\StringUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
@@ -73,7 +72,7 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
     }
 
     /**
-     * @param Search $search
+     * @param \Lightwerk\L10nTranslator\Domain\Model\Search $search
      * @return void
      */
     public function listAction(Search $search = null)

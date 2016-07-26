@@ -5,7 +5,7 @@ namespace Lightwerk\L10nTranslator\Domain\Service;
  *
  *  Copyright notice
  *
- *  (c) 2016 Achim Fritz <af@achimfritz.de>, Lightwerk GmbH
+ *  (c) 2016 Achim Fritz <af@lightwerk.com>, Lightwerk GmbH
  *
  *  All rights reserved
  *
@@ -109,27 +109,109 @@ class TranslationFileService implements SingletonInterface
     }
 
     /**
-     * @param string $xlfFile
+     * @param string $l10nFile
      * @param string $language
-     * @param string $altLanguage
+     * @param string $sourceLanguage
      * @return void
      * @throws Exception
      * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
      * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
      */
-    public function overwriteWithAltLanguage($xlfFile, $language, $altLanguage)
+    public function overwriteWithLanguage($l10nFile, $language, $sourceLanguage)
     {
-        $translationFile = $this->translationFileFactory->findByPath($xlfFile);
+        $translationFile = $this->translationFileFactory->findByPath($l10nFile);
         $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
-        $altL10nTranslationFile = $translationFile->getL10nTranslationFile($altLanguage);
-        foreach ($altL10nTranslationFile->getTranslations() as $translation) {
-            if ($l10nTranslationFile->getOwnTranslation($translation) === null) {
+        $sourceL10nTranslationFile = $translationFile->getL10nTranslationFile($sourceLanguage);
+        foreach ($sourceL10nTranslationFile->getTranslations() as $translation) {
+            if ($l10nTranslationFile->hasOwnTranslation($translation) === false) {
                 $l10nTranslationFile->addTranslation($translation);
             } else {
                 $l10nTranslationFile->replaceTranslationTarget($translation);
             }
         }
-        $this->translationFileWriterService->writeTranslationXlf($l10nTranslationFile);
+        $this->translationFileWriterService->writeTranslation($l10nTranslationFile);
+    }
+
+    /**
+     * @param string $l10nFile
+     * @param string $language
+     * @param string $sourceLanguage
+     * @return void
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    public function createMissingLabels($l10nFile, $language, $sourceLanguage = 'default')
+    {
+        if ($sourceLanguage !== 'default') {
+            $l10nTranslationFile = $this->mergeMissingLabelsFromSourceLanguage($l10nFile, $language, $sourceLanguage);
+        } else {
+            $l10nTranslationFile = $this->mergeMissingLabelsFromDefaultLanguage($l10nFile, $language);
+        }
+        $this->translationFileWriterService->writeTranslation($l10nTranslationFile);
+    }
+
+    /**
+     * @param string $language
+     * @param string $sourceLanguage
+     * @return void
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    public function createAllMissingLabels($language, $sourceLanguage = 'default')
+    {
+        $l10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
+        foreach ($l10nFiles as $l10nFile) {
+            $this->createMissingLabels($l10nFile, $language, $sourceLanguage);
+        }
+    }
+
+    /**
+     * @param string $l10nFile
+     * @param string $language
+     * @param string $sourceLanguage
+     * @return \Lightwerk\L10nTranslator\Domain\Model\L10nTranslationFile
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    protected function mergeMissingLabelsFromSourceLanguage($l10nFile, $language, $sourceLanguage)
+    {
+        $translationFile = $this->translationFileFactory->findByPath($l10nFile);
+        $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
+        $sourceL10nTranslationFile = $translationFile->getL10nTranslationFile($sourceLanguage);
+        foreach ($translationFile->getTranslations() as $translation) {
+            if ($l10nTranslationFile->hasOwnTranslation($translation) === false) {
+                $sourceTranslation = $sourceL10nTranslationFile->getOwnTranslation($translation);
+                if ($sourceTranslation !== null) {
+                    $l10nTranslationFile->addTranslation($sourceTranslation);
+                } else {
+                    $l10nTranslationFile->addTranslation($translation);
+                }
+            }
+        }
+        return $l10nTranslationFile;
+    }
+
+    /**
+     * @param string $l10nFile
+     * @param string $language
+     * @return \Lightwerk\L10nTranslator\Domain\Model\L10nTranslationFile
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    protected function mergeMissingLabelsFromDefaultLanguage($l10nFile, $language)
+    {
+        $translationFile = $this->translationFileFactory->findByPath($l10nFile);
+        $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
+        foreach ($translationFile->getTranslations() as $translation) {
+            if ($l10nTranslationFile->hasOwnTranslation($translation) === false) {
+                $l10nTranslationFile->addTranslation($translation);
+            }
+        }
+        return $l10nTranslationFile;
     }
 
     /**

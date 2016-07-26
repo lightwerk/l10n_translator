@@ -28,5 +28,6 @@ CLI Examples
 
 * `typo3/cli_dispatch.phpsh extbase l10n:allxml2XlfByDefaultXlf --xlfFile=powermail/Resources/Private/Language/locallang.xlf`
 * `typo3/cli_dispatch.phpsh extbase l10n:xml2XlfByDefaultXlf --xlfFile=solr/Resources/Private/Language/PluginSearch/locallang.xlf --language=de`
-* `typo3/cli_dispatch.phpsh extbase l10n:createMissingLabels --language=de`
-* `typo3/cli_dispatch.phpsh extbase l10n:overwriteWithAltLanguage --xlfFile=powermail/Resources/Private/Language/locallang.xlf --language=es --altLanguage=de`
+* `typo3/cli_dispatch.phpsh extbase l10n:createMissingFiles --language=de`
+* `typo3/cli_dispatch.phpsh extbase l10n:overwriteWithLanguage --l10nFile=powermail/Resources/Private/Language/locallang.xlf --language=es --sourceLanguage=de`
+* `typo3/cli_dispatch.phpsh extbase l10n:createMissingLabels --l10nFile=powermail/Resources/Private/Language/locallang.xlf --language=es --sourceLanguage=de`
