@@ -76,9 +76,9 @@ class TranslationController
      */
     public function update($params = [], AjaxRequestHandler &$ajaxObj = null)
     {
-
         $this->initializeObjects();
         try {
+            $this->assureModuleAccess();
             $request = $this->getRequest();
             $translationFile = $this->translationFileFactory->findByPath($request['path']);
             $l10nTranslationFile = $translationFile->getL10nTranslationFile($request['language']);
@@ -102,6 +102,26 @@ class TranslationController
         $ajaxObj->setContentFormat('json');
         $ajaxObj->addContent('flashMessage', $flashMessage);
 
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function assureModuleAccess()
+    {
+        $beUser = $this->getBeUser();
+        if ($beUser->check('modules', 'web_L10nTranslatorTranslator') === false) {
+            throw new Exception('Access Denied', 1469781234);
+        }
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBeUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     /**
