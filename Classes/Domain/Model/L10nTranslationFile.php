@@ -120,7 +120,7 @@ class L10nTranslationFile extends AbstractTranslationFile
         } else {
             $this->matchedTranslations = $this->getTranslations();
         }
-        $this->matchedMissingTranslations =  $this->getMissingTranslationsBySearch($search);
+        $this->matchedMissingTranslations = $this->getMissingTranslationsBySearch($search);
     }
 
     /**
@@ -133,7 +133,7 @@ class L10nTranslationFile extends AbstractTranslationFile
         if ($search->getIncludeSource() === true) {
             if ($search->hasSearchString() === true) {
                 foreach ($this->getMissingTranslations() as $translation) {
-                    if ($translation->matchSearch($search) === TRUE) {
+                    if ($translation->matchSearch($search) === true) {
                         $filtered[] = $translation;
                     }
                 }
