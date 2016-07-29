@@ -79,24 +79,10 @@
 			<f:for each="{translationFiles}" as="translationFile">
 				<f:for each="{translationFile.l10nTranslationFiles}" as="l10nTranslationFile">
 					<f:for each="{l10nTranslationFile.matchedTranslations}" as="translation">
-						<tr>
-							<td><f:format.crop maxCharacters="200">{translation.translationKey}</f:format.crop></td>
-							<td>{l10nTranslationFile.language}</td>
-							<td>
-								<f:link.action action="list" arguments="{search: {exactMatch: 1, l10nFile: translationFile.relativePath, searchString: translation.translationSource, includeSource: 1}}">
-									{translation.translationSource}
-								</f:link.action>
-							</td>
-							<td>
-								<form class="l10n-translation-translation">
-									<input type="hidden" name="key" value="{translation.translationKey}" />
-									<input type="text" name="target" value="{translation.translationTarget}" size="50" />
-									<input type="hidden" name="path" value="{translationFile.relativePath}" />
-									<input type="hidden" name="language" value="{l10nTranslationFile.language}" />
-									<input type="submit" value="Update" class="btn btn-default" />
-								</form>
-							</td>
-						</tr>
+						<f:render partial="TranslationFile/TableRow" arguments="{translation: translation, l10nTranslationFile: l10nTranslationFile, translationFile: translationFile}" />
+					</f:for>
+					<f:for each="{l10nTranslationFile.matchedMissingTranslations}" as="translation">
+						<f:render partial="TranslationFile/TableRow" arguments="{translation: translation, l10nTranslationFile: l10nTranslationFile, translationFile: translationFile, missing: 1}" />
 					</f:for>
 				</f:for>
 			</f:for>

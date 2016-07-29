@@ -76,14 +76,14 @@ class TranslationController
      */
     public function update($params = [], AjaxRequestHandler &$ajaxObj = null)
     {
-
         $this->initializeObjects();
         try {
+            $this->assureModuleAccess();
             $request = $this->getRequest();
             $translationFile = $this->translationFileFactory->findByPath($request['path']);
             $l10nTranslationFile = $translationFile->getL10nTranslationFile($request['language']);
             $translation = new Translation($request['path'], $request['key'], $request['target']);
-            $l10nTranslationFile->replaceTranslationTarget($translation);
+            $l10nTranslationFile->upsertTranslationTarget($translation);
             $this->translationFileWriterService->writeTranslation($l10nTranslationFile);
             $this->flushCache();
             $flashMessage = array(
@@ -102,6 +102,26 @@ class TranslationController
         $ajaxObj->setContentFormat('json');
         $ajaxObj->addContent('flashMessage', $flashMessage);
 
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function assureModuleAccess()
+    {
+        $beUser = $this->getBeUser();
+        if ($beUser->check('modules', 'web_L10nTranslatorTranslator') === false) {
+            throw new Exception('Access Denied', 1469781234);
+        }
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBeUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     /**
@@ -148,7 +168,7 @@ class TranslationController
             throw new Exception('Path not configured: ' . $path, 1467175551);
         }
         if (empty($key) === true) {
-            throw new Exception('Source may not be empty.', 1467175554);
+            throw new Exception('Key may not be empty.', 1467175554);
         }
         if ($target !== strip_tags($target)) {
             throw new Exception('HTML not allowed.', 1467175552);

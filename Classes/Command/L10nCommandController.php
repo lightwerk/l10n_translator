@@ -71,6 +71,7 @@ class L10nCommandController extends CommandController
      */
     public function allXml2XlfByDefaultXlfCommand($xlfFile, $createEmptyLabels = false)
     {
+        $this->flushCache();
         $this->translationFileService->allXml2XlfByDefaultXlf($xlfFile, $createEmptyLabels);
         $this->flushCache();
     }
@@ -83,6 +84,7 @@ class L10nCommandController extends CommandController
      */
     public function xml2XlfByDefaultXlfCommand($xlfFile, $language, $createEmptyLabels = false)
     {
+        $this->flushCache();
         $this->translationFileService->xml2XlfByDefaultXlf($xlfFile, $language, $createEmptyLabels);
         $this->flushCache();
     }
@@ -94,6 +96,7 @@ class L10nCommandController extends CommandController
      */
     public function createMissingFilesCommand($language, $copyLabels = true)
     {
+        $this->flushCache();
         $this->translationFileService->createMissingFiles($language, $copyLabels);
         $this->flushCache();
     }
@@ -106,6 +109,7 @@ class L10nCommandController extends CommandController
      */
     public function overwriteWithLanguageCommand($l10nFile, $language, $sourceLanguage)
     {
+        $this->flushCache();
         $this->translationFileService->overwriteWithLanguage($l10nFile, $language, $sourceLanguage);
         $this->flushCache();
     }
@@ -118,6 +122,7 @@ class L10nCommandController extends CommandController
      */
     public function createMissingLabelsCommand($l10nFile, $language, $sourceLanguage = 'default')
     {
+        $this->flushCache();
         $this->translationFileService->createMissingLabels($l10nFile, $language, $sourceLanguage);
         $this->flushCache();
     }
@@ -129,24 +134,39 @@ class L10nCommandController extends CommandController
      */
     public function createAllMissingLabelsCommand($language, $sourceLanguage = 'default')
     {
+        $this->flushCache();
         $this->translationFileService->createAllMissingLabels($language, $sourceLanguage);
         $this->flushCache();
     }
 
+    /**
+     * @return void
+     */
+    public function flushCacheCommand()
+    {
+        $this->flushCache();
+    }
 
     /**
      * @param string $searchString
      * @param string $language
-     * @param string $extension
+     * @param string $l10nFile
+     * @param bool $caseSensitive
+     * @param bool $exactMatch
+     * @param bool $includeSource
      * @return void
      */
-    public function listCommand($searchString = '', $language = '', $extension = '')
+    public function listCommand($searchString = '', $language = '', $l10nFile = '', $caseSensitive = false, $exactMatch = false, $includeSource = false)
     {
-        $search = new Search($searchString, $language, $extension);
+        $search = new Search($searchString, $language, $l10nFile, $caseSensitive, $exactMatch, $includeSource);
         $translationFiles = $this->translationFileFactory->findBySearch($search);
         foreach ($translationFiles as $translationFile) {
             foreach ($translationFile->getL10nTranslationFiles() as $l10nTranslationFile) {
                 $translations = $l10nTranslationFile->getMatchedTranslations();
+                foreach ($translations as $translation) {
+                    $this->outputLine($l10nTranslationFile->getLanguage() . ' ' . $translation->getTranslationKey() . ': ' . $translation->getTranslationTarget());
+                }
+                $translations = $l10nTranslationFile->getMatchedMissingTranslations();
                 foreach ($translations as $translation) {
                     $this->outputLine($l10nTranslationFile->getLanguage() . ' ' . $translation->getTranslationKey() . ': ' . $translation->getTranslationTarget());
                 }

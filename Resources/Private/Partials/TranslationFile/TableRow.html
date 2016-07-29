@@ -1,0 +1,30 @@
+<tr>
+	<td><f:format.crop maxCharacters="200">{translation.translationKey}</f:format.crop></td>
+	<td>{l10nTranslationFile.language}</td>
+	<td>
+		<f:link.action action="list" arguments="{search: {exactMatch: 1, l10nFile: translationFile.relativePath, searchString: translation.translationSource, includeSource: 1}}">
+			{translation.translationSource}
+		</f:link.action>
+	</td>
+	<td>
+		<form class="l10n-translation-translation">
+			<input type="hidden" name="key" value="{translation.translationKey}" />
+			<f:if condition="{missing}">
+				<f:then>
+					<span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-error" data-identifier="status-dialog-error">
+						<span class="icon-markup">
+							<span class="icon-unify"><i class="fa fa-exclamation-circle"></i></span>
+						</span>
+					</span>
+					<input type="text" name="target" value="{translation.translationTarget}" size="47" />
+				</f:then>
+				<f:else>
+					<input type="text" name="target" value="{translation.translationTarget}" size="50" />
+				</f:else>
+			</f:if>
+			<input type="hidden" name="path" value="{translationFile.relativePath}" />
+			<input type="hidden" name="language" value="{l10nTranslationFile.language}" />
+			<input type="submit" value="Update" class="btn btn-default" />
+		</form>
+	</td>
+</tr>

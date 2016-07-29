@@ -66,6 +66,7 @@ class TranslationFile extends AbstractTranslationFile
             $splFileInfo = new \SplFileInfo($path);
             $l10nTranslationFile = new L10nTranslationFile($this);
             $l10nTranslationFile->initFileSystem($splFileInfo, $localizationFactory);
+            $l10nTranslationFile->initMissingTranslations();
             $this->l10nTranslationFiles[$language] = $l10nTranslationFile;
         }
     }
@@ -102,10 +103,8 @@ class TranslationFile extends AbstractTranslationFile
      */
     public function applySearch(Search $search)
     {
-        if ($search->hasSearchString()) {
-            foreach ($this->getL10nTranslationFiles() as $l10nTranslationFile) {
-                $l10nTranslationFile->applySearch($search);
-            }
+        foreach ($this->getL10nTranslationFiles() as $l10nTranslationFile) {
+            $l10nTranslationFile->applySearch($search);
         }
     }
 

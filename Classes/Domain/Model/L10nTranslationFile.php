@@ -42,6 +42,16 @@ class L10nTranslationFile extends AbstractTranslationFile
     protected $translationFile;
 
     /**
+     * @var Translation[]
+     */
+    protected $missingTranslations = [];
+
+    /**
+     * @var Translation[]
+     */
+    protected $matchedMissingTranslations = [];
+
+    /**
      * @param TranslationFile $translationFile
      * @throws Exception
      */
@@ -71,14 +81,67 @@ class L10nTranslationFile extends AbstractTranslationFile
     }
 
     /**
+     * @return void
+     */
+    public function initMissingTranslations()
+    {
+        foreach ($this->translationFile->getTranslations() as $translation) {
+            if ($this->hasOwnTranslation($translation) === false) {
+                $this->missingTranslations[] = new Translation($translation->getPath(), $translation->getTranslationKey() , '', $translation->getTranslationSource());
+            }
+        }
+    }
+
+    /**
+     * @return Translation[]
+     */
+    public function getMissingTranslations()
+    {
+        return $this->missingTranslations;
+    }
+
+    /**
+     * @return Translation[]
+     */
+    public function getMatchedMissingTranslations()
+    {
+        return $this->matchedMissingTranslations;
+    }
+
+
+    /**
      * @param Search $search
      * @return void
      */
     public function applySearch(Search $search)
     {
-        if ($search->hasSearchString()) {
+        if ($search->hasSearchString() === true) {
             $this->matchedTranslations = $this->getTranslationsBySearch($search);
+        } else {
+            $this->matchedTranslations = $this->getTranslations();
         }
+        $this->matchedMissingTranslations =  $this->getMissingTranslationsBySearch($search);
+    }
+
+    /**
+     * @param Search $search
+     * @return Translation[]
+     */
+    protected function getMissingTranslationsBySearch($search)
+    {
+        $filtered = [];
+        if ($search->getIncludeSource() === true) {
+            if ($search->hasSearchString() === true) {
+                foreach ($this->getMissingTranslations() as $translation) {
+                    if ($translation->matchSearch($search) === TRUE) {
+                        $filtered[] = $translation;
+                    }
+                }
+            } else {
+                $filtered = $this->getMissingTranslations();
+            }
+        }
+        return $filtered;
     }
     
     /**
@@ -87,5 +150,23 @@ class L10nTranslationFile extends AbstractTranslationFile
     public function getTranslationFile()
     {
         return $this->translationFile;
+    }
+
+    /**
+     * @param Translation $translation
+     * @return void
+     * @throws Exception
+     */
+    public function upsertTranslationTarget(Translation $translation)
+    {
+        if ($this->hasOwnTranslation($translation) === true) {
+            $this->replaceTranslationTarget($translation);
+        } elseif ($this->translationFile->hasOwnTranslation($translation) === true) {
+            $clonedTranslation = clone($this->translationFile->getOwnTranslation($translation));
+            $clonedTranslation->replaceTranslationTargetByOtherTranslation($translation);
+            $this->addTranslation($clonedTranslation);
+        } else {
+            throw new Exception('cannot upsert translation ' . $translation->getTranslationKey(), 1469774422);
+        }
     }
 }
