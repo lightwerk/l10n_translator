@@ -83,7 +83,7 @@ class TranslationController
             $translationFile = $this->translationFileFactory->findByPath($request['path']);
             $l10nTranslationFile = $translationFile->getL10nTranslationFile($request['language']);
             $translation = new Translation($request['path'], $request['key'], $request['target']);
-            $l10nTranslationFile->replaceTranslationTarget($translation);
+            $l10nTranslationFile->upsertTranslationTarget($translation);
             $this->translationFileWriterService->writeTranslation($l10nTranslationFile);
             $this->flushCache();
             $flashMessage = array(
@@ -148,7 +148,7 @@ class TranslationController
             throw new Exception('Path not configured: ' . $path, 1467175551);
         }
         if (empty($key) === true) {
-            throw new Exception('Source may not be empty.', 1467175554);
+            throw new Exception('Key may not be empty.', 1467175554);
         }
         if ($target !== strip_tags($target)) {
             throw new Exception('HTML not allowed.', 1467175552);
