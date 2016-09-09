@@ -1,12 +1,24 @@
 {
-	"name": "lw/l10n_translator",
+	"name": "lw/l10n-translator",
 	"type": "typo3-cms-extension",
-	"description": "translate files in l10n",
-	"homepage": "http://typo3.org",
+	"description": "Translate l10n files (label fiels) in a TYPO3 backend module. Maintain l10n folder with CLI tasks.",
+	"authors": [
+		{
+			"name": "Achim Fritz",
+			"role": "Developer"
+		},
+		{
+			"name": "Daniel Goerz",
+			"role": "Developer"
+		}
+	],
 	"license": ["GPL-2.0+"],
-	"version": "7.6",
 	"require": {
-		"typo3/cms-core": "~7.6"
+		"typo3/cms-core": "^7.6"
+	},
+	"replace": {
+		"l10n_translator": "self.version",
+		"typo3-ter/l10n-translator": "self.version"
 	},
 	"autoload": {
 		"psr-4": {
