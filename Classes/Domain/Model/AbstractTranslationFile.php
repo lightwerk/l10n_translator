@@ -95,12 +95,11 @@ abstract class AbstractTranslationFile
             if (isset($labels[0]['source']) === false) {
                 throw new Exception('no source found ' . $this->getCleanPath(), 1466171554);
             }
-            if (isset($labels[0]['target']) === false) {
-                throw new Exception('no target found ' . $this->getCleanPath(), 1466171555);
+            if (isset($labels[0]['target']) === true) {
+                $translation = new Translation($this->getCleanPath(), $key, $labels[0]['target'], $labels[0]['source']);
+                $this->translations[] = $translation;
+                $this->matchedTranslations[] = $translation;
             }
-            $translation = new Translation($this->getCleanPath(), $key, $labels[0]['target'], $labels[0]['source']);
-            $this->translations[] = $translation;
-            $this->matchedTranslations[] = $translation;
         }
     }
 
@@ -199,7 +198,7 @@ abstract class AbstractTranslationFile
     {
         $this->translations[] = $translation;
     }
-    
+
 
     /**
      * @return \splFileInfo

@@ -175,6 +175,29 @@ class L10nCommandController extends CommandController
     }
 
     /**
+     * @param string $xlfFile
+     * @param string $language
+     * @return void
+     */
+    public function xml2XlfCommand($xmlFile, $language = 'default')
+    {
+        $this->flushCache();
+        $this->translationFileService->xml2Xlf($xmlFile, $language);
+        $this->flushCache();
+    }
+
+    /**
+     * @param string $xlfFile
+     * @return void
+     */
+    public function allXml2XlfCommand($xmlFile)
+    {
+        $this->flushCache();
+        $this->translationFileService->allXml2XlfCommand($xmlFile);
+        $this->flushCache();
+    }
+
+    /**
      * @return void
      */
     protected function flushCache()
