@@ -65,6 +65,15 @@ class L10nCommandController extends CommandController
     protected $cacheManager;
 
     /**
+     * @param string $xmlFile
+     * @return void
+     */
+    public function prepareXmlLanguageFilesCommand($xmlFile)
+    {
+        $this->translationFileService->prepareXmlLanguageFiles($xmlFile);
+    }
+
+    /**
      * @param string $xlfFile
      * @param boolean $createEmptyLabels
      * @return void
@@ -175,7 +184,7 @@ class L10nCommandController extends CommandController
     }
 
     /**
-     * @param string $xlfFile
+     * @param string $xmlFile
      * @param string $language
      * @return void
      */
@@ -187,13 +196,13 @@ class L10nCommandController extends CommandController
     }
 
     /**
-     * @param string $xlfFile
+     * @param string $xmlFile
      * @return void
      */
     public function allXml2XlfCommand($xmlFile)
     {
         $this->flushCache();
-        $this->translationFileService->allXml2XlfCommand($xmlFile);
+        $this->translationFileService->allXml2Xlf($xmlFile);
         $this->flushCache();
     }
 

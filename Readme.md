@@ -37,5 +37,5 @@ Convert a XML File with multilanguages to XLF Files
 
 the first command copy the locallang.xml file to all languages in the l10n-Folder, for preparing the second command, which writes the XLF-Files
 
-* `typo3/cli_dispatch.phpsh extbase l10n:prepareXmlLanguageFiles --xlfFile=<extKey>/Resources/Private/Language/locallang.xml`
-* `typo3/cli_dispatch.phpsh extbase l10n:allxml2xlf --xlfFile=<extKey>/Resources/Private/Language/locallang.xml`
+* `typo3/cli_dispatch.phpsh extbase l10n:prepareXmlLanguageFiles --xmlFile=<extKey>/Resources/Private/Language/locallang.xml`
+* `typo3/cli_dispatch.phpsh extbase l10n:allxml2xlf --xmlFile=<extKey>/Resources/Private/Language/locallang.xml`

@@ -29,6 +29,7 @@ namespace Lightwerk\L10nTranslator\Domain\Service;
 use Lightwerk\L10nTranslator\Domain\Model\Search;
 use Lightwerk\L10nTranslator\Domain\Model\TranslationFile;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @package TYPO3
@@ -257,7 +258,7 @@ class TranslationFileService implements SingletonInterface
      * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
      * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
      */
-    public function allXml2XlfCommand($xmlFile)
+    public function allXml2Xlf($xmlFile)
     {
         $translationFile = $this->translationFileFactory->findByRelativePath($xmlFile);
         $this->translationFileWriterService->writeTranslationXlf($translationFile);
@@ -287,10 +288,12 @@ class TranslationFileService implements SingletonInterface
                 if (@mkdir($parent->getPathname(), 0777, true) === false) {
                     throw new Exception('cannot create directory ' . $parent->getPathname(), 1476776272);
                 }
+                GeneralUtility::fixPermissions($parent->getPathname());
             }
             if (@copy($xmlPath, $splFileInfo->getPathname()) === false) {
                 throw new Exception('cannot copy ' . $xmlPath . ' to ' . $splFileInfo->getPathname(), 1476776273);
             }
+            GeneralUtility::fixPermissions($splFileInfo->getPathname());
         }
     }
 }
