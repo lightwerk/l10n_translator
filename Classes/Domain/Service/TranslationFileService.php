@@ -29,6 +29,7 @@ namespace Lightwerk\L10nTranslator\Domain\Service;
 use Lightwerk\L10nTranslator\Domain\Model\Search;
 use Lightwerk\L10nTranslator\Domain\Model\TranslationFile;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @package TYPO3
@@ -247,6 +248,52 @@ class TranslationFileService implements SingletonInterface
             $this->translationFileWriterService->writeTranslationXlf($translationFile->getL10nTranslationFile($language));
         } else {
             $this->translationFileWriterService->writeTranslationXlf($translationFile);
+        }
+    }
+
+    /**
+     * @param string $xmlFile
+     * @return void
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    public function allXml2Xlf($xmlFile)
+    {
+        $translationFile = $this->translationFileFactory->findByRelativePath($xmlFile);
+        $this->translationFileWriterService->writeTranslationXlf($translationFile);
+        $languages = $this->l10nConfiguration->getAvailableL10nLanguages();
+        foreach ($languages as $language) {
+            $this->translationFileWriterService->writeTranslationXlf($translationFile->getL10nTranslationFile($language));
+        }
+    }
+
+    /**
+     * @param string $xmlFile
+     * @return void
+     */
+    public function prepareXmlLanguageFiles($xmlFile)
+    {
+        $translationFile = $this->translationFileFactory->findByRelativePath($xmlFile);
+        $xmlPath = $translationFile->getCleanPath();
+        $languages = $this->l10nConfiguration->getAvailableL10nLanguages();
+        foreach ($languages as $language) {
+            $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
+            $splFileInfo = $l10nTranslationFile->getSplFileInfo();
+            if ($splFileInfo->isFile() === true) {
+                throw new Exception('l10n language file already exists ' . $splFileInfo->getPathname(), 1476776271);
+            }
+            $parent = $splFileInfo->getPathInfo();
+            if($parent->isDir() === false) {
+                if (@mkdir($parent->getPathname(), 0777, true) === false) {
+                    throw new Exception('cannot create directory ' . $parent->getPathname(), 1476776272);
+                }
+                GeneralUtility::fixPermissions($parent->getPathname());
+            }
+            if (@copy($xmlPath, $splFileInfo->getPathname()) === false) {
+                throw new Exception('cannot copy ' . $xmlPath . ' to ' . $splFileInfo->getPathname(), 1476776273);
+            }
+            GeneralUtility::fixPermissions($splFileInfo->getPathname());
         }
     }
 }

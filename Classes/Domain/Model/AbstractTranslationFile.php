@@ -92,15 +92,11 @@ abstract class AbstractTranslationFile
     {
         $parsedData = $localizationFactory->getParsedData($this->getCleanPath(), $this->getLanguage());
         foreach ($parsedData[$this->getLanguage()] as $key => $labels) {
-            if (isset($labels[0]['source']) === false) {
-                throw new Exception('no source found ' . $this->getCleanPath(), 1466171554);
+            if (isset($labels[0]['source']) === true && isset($labels[0]['target']) === true) {
+                $translation = new Translation($this->getCleanPath(), $key, $labels[0]['target'], $labels[0]['source']);
+                $this->translations[] = $translation;
+                $this->matchedTranslations[] = $translation;
             }
-            if (isset($labels[0]['target']) === false) {
-                throw new Exception('no target found ' . $this->getCleanPath(), 1466171555);
-            }
-            $translation = new Translation($this->getCleanPath(), $key, $labels[0]['target'], $labels[0]['source']);
-            $this->translations[] = $translation;
-            $this->matchedTranslations[] = $translation;
         }
     }
 
@@ -199,7 +195,7 @@ abstract class AbstractTranslationFile
     {
         $this->translations[] = $translation;
     }
-    
+
 
     /**
      * @return \splFileInfo
