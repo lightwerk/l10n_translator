@@ -111,18 +111,18 @@ class TranslationFileWriterService implements SingletonInterface
      */
     public function writeTranslationXml(AbstractTranslationFile $translationFile)
     {
-        $xmlOptions = array(
-            'parentTagMap'=>array(
-                'data'=>'languageKey',
-                'orig_hash'=>'languageKey',
-                'orig_text'=>'languageKey',
-                'labelContext'=>'label',
-                'languageKey'=>'label'
-            )
-        );
-
-        $xmlFile = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>'.chr(10);
-        $xmlFile .= GeneralUtility::array2xml($translationFile->translationsToArray(), '', 0, 'T3locallangExt', 0, $xmlOptions);
+        $xmlFile = [];
+        $xmlFile[] = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>';
+        $xmlFile[] = '<T3locallangExt>';
+        $xmlFile[] = "\t" . '<data type="array">';
+        $xmlFile[] = "\t\t" . '<languageKey index="' . $translationFile->getLanguage() . '" type="array">';
+        $translations = $translationFile->getTranslations();
+        foreach ($translations as $translation) {
+            $xmlFile[] = "\t\t\t" . '<label index="' . $translation->getTranslationKey() . '">' . htmlspecialchars($translation->getTranslationTarget()) . '</label>';
+        }
+        $xmlFile[] = "\t\t" . '</languageKey>';
+        $xmlFile[] = "\t" . '</data>';
+        $xmlFile[] = '</T3locallangExt>';
         $xml = implode(LF, $xmlFile);
         $this->assureValidXml($xml, $translationFile);
         $res = GeneralUtility::writeFile($translationFile->getCleanPath(), $xml);
