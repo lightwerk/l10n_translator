@@ -68,6 +68,7 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
             $propertyMappingConfiguration->allowProperties('exactMatch');
             $propertyMappingConfiguration->allowProperties('caseInSensitive');
             $propertyMappingConfiguration->allowProperties('includeSource');
+            $propertyMappingConfiguration->allowProperties('includeKey');
         }
     }
 

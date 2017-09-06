@@ -39,6 +39,9 @@
 			<trans-unit id="tx_l10ntranslator_domain_model_search.includeSource">
 				<source>Include Source</source>
 			</trans-unit>
+			<trans-unit id="tx_l10ntranslator_domain_model_search.includeKey">
+				<source>Include Key</source>
+			</trans-unit>
 			<trans-unit id="search.heading">
 				<source>Search</source>
 			</trans-unit>

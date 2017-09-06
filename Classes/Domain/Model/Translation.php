@@ -73,13 +73,17 @@ class Translation
     protected function exactMatchSearch(Search $search)
     {
         $searchString = $search->getSearchString();
+        $return = false;
         if ($this->getTranslationTarget() === $searchString) {
-            return true;
+            $return = true;
         }
-        if ($search->getIncludeSource() === true) {
-            return $this->getTranslationSource() === $searchString;
+        if ($return === false && $search->getIncludeSource() === true) {
+            $return = $this->getTranslationSource() === $searchString;
         }
-        return false;
+        if ($return === false && $search->getIncludeKey() === true) {
+            $return = $this->getTranslationKey() === $searchString;
+        }
+        return $return;
     }
 
     /**
@@ -89,13 +93,17 @@ class Translation
     protected function caseInSensitiveMatchSearch(Search $search)
     {
         $searchString = $search->getSearchString();
+        $return = false;
         if (strpos(strtolower($this->getTranslationTarget()), strtolower($searchString)) !== false) {
-            return true;
+            $return = true;
         }
-        if ($search->getIncludeSource() === true) {
-            return strpos(strtolower($this->getTranslationSource()), strtolower($searchString)) !== false;
+        if ($return === false && $search->getIncludeSource() === true) {
+            $return = strpos(strtolower($this->getTranslationSource()), strtolower($searchString)) !== false;
         }
-        return false;
+        if ($return === false && $search->getIncludeKey() === true) {
+            $return = strpos(strtolower($this->getTranslationKey()), strtolower($searchString)) !== false;
+        }
+        return $return;
     }
 
     /**
@@ -105,13 +113,17 @@ class Translation
     protected function caseSensitiveMatchSearch(Search $search)
     {
         $searchString = $search->getSearchString();
+        $return = false;
         if (strpos($this->getTranslationTarget(), $searchString) !== false) {
-            return true;
+            $return = true;
         }
-        if ($search->getIncludeSource() === true) {
-            return strpos($this->getTranslationSource(), $searchString) !== false;
+        if ($return === false && $search->getIncludeSource() === true) {
+            $return = strpos($this->getTranslationSource(), $searchString) !== false;
         }
-        return false;
+        if ($return === false && $search->getIncludeKey() === true) {
+            $return = strpos($this->getTranslationKey(), $searchString) !== false;
+        }
+        return $return;
     }
 
     /**

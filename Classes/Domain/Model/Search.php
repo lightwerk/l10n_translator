@@ -64,14 +64,20 @@ class Search
     protected $includeSource = false;
 
     /**
+     * @var bool
+     */
+    protected $includeKey = false;
+
+    /**
      * @param string $searchString
      * @param string $language
      * @param string $l10nFile
      * @param bool $caseSensitive
      * @param bool $exactMatch
      * @param bool $includeSource
+     * @param bool $includeKey
      */
-    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseSensitive = false, $exactMatch = false, $includeSource = false)
+    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseSensitive = false, $exactMatch = false, $includeSource = false, $includeKey = false)
     {
         $this->searchString = $searchString;
         $this->language = $language;
@@ -79,6 +85,7 @@ class Search
         $this->caseSensitive = $caseSensitive;
         $this->exactMatch = $exactMatch;
         $this->includeSource = $includeSource;
+        $this->includeKey = $includeKey;
     }
 
     /**
@@ -153,5 +160,13 @@ class Search
     public function hasSearchString()
     {
         return $this->searchString !== '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIncludeKey()
+    {
+        return $this->includeKey;
     }
 }

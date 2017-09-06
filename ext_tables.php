@@ -9,14 +9,14 @@ if (TYPO3_MODE === 'BE') {
         'web',
         'translator',
         '',
-        array(
+        [
             'TranslationFile' => 'list'
-        ),
-        array(
+        ],
+        [
             'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+            'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_translator.xlf',
-        )
+        ]
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
         'L10nTranslator::translation::update',
