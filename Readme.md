@@ -40,11 +40,17 @@ Create all missing labels for powermail in spanish and fills the source language
 Override all labels in a specific file with labels from another language.
 `l10n:overwriteWithLanguage --l10nFile=powermail/Resources/Private/Language/locallang.xlf --language=es --sourceLanguage=de`
 
+Create all missing files for all configured languages
+`typo3cms l10n:createmissingfilesforallconfiguredlanguages`
+
+Create all missing labels for all configured languages
+`l10n:createallmissinglabelsforallconfiguredlanguages`
+
 Create all missing files for all existing sys_languages
-`typo3cms l10n:createmissingfilesforalllanguages`
+`typo3cms l10n:createmissingfilesforallsystemlanguages`
 
 Create all missing labels for all existing sys_languages
-`l10n:createallmissinglabelsforalllanguages`
+`l10n:createallmissinglabelsforallsystemlanguages`
 
 
 Convert a XML File with multilanguages to XLF Files

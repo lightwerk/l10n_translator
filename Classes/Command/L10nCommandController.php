@@ -220,7 +220,7 @@ class L10nCommandController extends CommandController
      * @param bool $copyLabels
      * @return void
      */
-    public function createMissingFilesForAllLanguagesCommand($copyLabels = true)
+    public function createMissingFilesForAllSystemLanguagesCommand($copyLabels = true)
     {
         $this->flushCache();
         $languages = $this->getAllSystemLanguages();
@@ -238,10 +238,46 @@ class L10nCommandController extends CommandController
      * @param string $sourceLanguage
      * @return void
      */
-    public function createAllMissingLabelsForAllLanguagesCommand($sourceLanguage = 'default')
+    public function createAllMissingLabelsForAllSystemLanguagesCommand($sourceLanguage = 'default')
     {
         $this->flushCache();
         $languages = $this->getAllSystemLanguages();
+        foreach ($languages as $language) {
+            try {
+                $this->translationFileService->createAllMissingLabels($language, $sourceLanguage);
+            } catch (\Lightwerk\L10nTranslator\Domain\Model\Exception $e) {
+                $this->outputLine($e->getMessage());
+            }
+        }
+        $this->flushCache();
+    }
+
+    /**
+     * @param bool $copyLabels
+     * @return void
+     */
+    public function createMissingFilesForAllConfiguredLanguagesCommand($copyLabels = true)
+    {
+        $this->flushCache();
+        $languages = $this->getAllConfiguredLanguages();
+        foreach ($languages as $language) {
+            try {
+                $this->translationFileService->createMissingFiles($language, $copyLabels);
+            } catch (\Lightwerk\L10nTranslator\Domain\Model\Exception $e) {
+                $this->outputLine($e->getMessage());
+            }
+        }
+        $this->flushCache();
+    }
+
+    /**
+     * @param string $sourceLanguage
+     * @return void
+     */
+    public function createAllMissingLabelsForAllConfiguredLanguagesCommand($sourceLanguage = 'default')
+    {
+        $this->flushCache();
+        $languages = $this->getAllConfiguredLanguages();
         foreach ($languages as $language) {
             try {
                 $this->translationFileService->createAllMissingLabels($language, $sourceLanguage);
@@ -264,6 +300,14 @@ class L10nCommandController extends CommandController
         );
         $rows = $rows ?: [];
         return array_unique(array_column($rows, 'language_isocode'));
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllConfiguredLanguages()
+    {
+        return array_unique($this->l10nConfiguration->getAvailableL10nLanguages());
     }
 
     /**
