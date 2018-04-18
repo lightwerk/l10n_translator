@@ -25,6 +25,7 @@ namespace Lightwerk\L10nTranslator\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use Lightwerk\L10nTranslator\Domain\Model\Search;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Extbase\MVC\Controller\CommandController;
 
 /**
@@ -213,5 +214,63 @@ class L10nCommandController extends CommandController
     {
         $cacheFrontend = $this->cacheManager->getCache('l10n');
         $cacheFrontend->flush();
+    }
+
+    /**
+     * @param bool $copyLabels
+     * @return void
+     */
+    public function createMissingFilesForAllLanguagesCommand($copyLabels = true)
+    {
+        $this->flushCache();
+        $languages = $this->getAllSystemLanguages();
+        foreach ($languages as $language) {
+            try {
+                $this->translationFileService->createMissingFiles($language, $copyLabels);
+            } catch (\Lightwerk\L10nTranslator\Domain\Model\Exception $e) {
+                $this->outputLine($e->getMessage());
+            }
+        }
+        $this->flushCache();
+    }
+
+    /**
+     * @param string $sourceLanguage
+     * @return void
+     */
+    public function createAllMissingLabelsForAllLanguagesCommand($sourceLanguage = 'default')
+    {
+        $this->flushCache();
+        $languages = $this->getAllSystemLanguages();
+        foreach ($languages as $language) {
+            try {
+                $this->translationFileService->createAllMissingLabels($language, $sourceLanguage);
+            } catch (\Lightwerk\L10nTranslator\Domain\Model\Exception $e) {
+                $this->outputLine($e->getMessage());
+            }
+        }
+        $this->flushCache();
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllSystemLanguages()
+    {
+        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
+            'language_isocode',
+            'sys_language',
+            ''
+        );
+        $rows = $rows ?: [];
+        return array_unique(array_column($rows, 'language_isocode'));
+    }
+
+    /**
+     * @return DatabaseConnection
+     */
+    private function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
