@@ -85,12 +85,12 @@ abstract class AbstractTranslationFile
     }
 
     /**
+     * @param LocalizationFactory $localizationFactory
      * @return void
-     * @throws Exception
      */
     protected function initTranslations(LocalizationFactory $localizationFactory)
     {
-        $parsedData = $localizationFactory->getParsedData($this->getCleanPath(), $this->getLanguage());
+        $parsedData = $this->getParsedData($localizationFactory);
         foreach ($parsedData[$this->getLanguage()] as $key => $labels) {
             if (isset($labels[0]['source']) === true && isset($labels[0]['target']) === true) {
                 $translation = new Translation($this->getCleanPath(), $key, $labels[0]['target'], $labels[0]['source']);
@@ -100,6 +100,11 @@ abstract class AbstractTranslationFile
         }
     }
 
+    /**
+     * @param LocalizationFactory $localizationFactory
+     * @return array
+     */
+    abstract protected function getParsedData(LocalizationFactory $localizationFactory);
 
     /**
      * @param Search $search

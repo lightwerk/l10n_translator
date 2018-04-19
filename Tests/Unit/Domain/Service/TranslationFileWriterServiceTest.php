@@ -1,4 +1,5 @@
 <?php
+
 namespace Lightwerk\L10nTranslator\Tests\Unit\Domain\Service;
 
 /*
@@ -14,6 +15,8 @@ namespace Lightwerk\L10nTranslator\Tests\Unit\Domain\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Lightwerk\L10nTranslator\Domain\Model\TranslationFile;
+use Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -28,12 +31,10 @@ class TranslationFileWriterServiceTest extends UnitTestCase
      * @test
      * @expectedException \Lightwerk\L10nTranslator\Domain\Service\Exception
      */
-    public function assureValidXmlThrowsExceptionForInvalideXml()
+    public function assureValidXmlThrowsExceptionForInvalidXml()
     {
-        $translationFile = $this->getMock('Lightwerk\L10nTranslator\Domain\Model\TranslationFile');
-        $fileWriter = $this->getAccessibleMock('Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService', array('foo'));
+        $translationFile = $this->getAccessibleMock(TranslationFile::class);
+        $fileWriter = $this->getAccessibleMock(TranslationFileWriterService::class, ['foo']);
         $fileWriter->_call('assureValidXml', 'foo', $translationFile);
     }
-
-
 }

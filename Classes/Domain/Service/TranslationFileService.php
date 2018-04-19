@@ -101,6 +101,9 @@ class TranslationFileService implements SingletonInterface
             if ($l10nTranslationFile->getSplFileInfo()->isFile() === false) {
                 if ($copyLabels === true) {
                     foreach ($translationFile->getTranslations() as $translation) {
+                        if ($l10nTranslationFile->hasOwnTranslation($translation)) {
+                            continue;
+                        }
                         $l10nTranslationFile->addTranslation($translation);
                     }
                 }

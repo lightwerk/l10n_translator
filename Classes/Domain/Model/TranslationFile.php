@@ -72,6 +72,15 @@ class TranslationFile extends AbstractTranslationFile
     }
 
     /**
+     * @param LocalizationFactory $localizationFactory
+     * @return array
+     */
+    protected function getParsedData(LocalizationFactory $localizationFactory)
+    {
+        return $localizationFactory->getParsedData($this->getCleanPath(), $this->getLanguage());
+    }
+
+    /**
      * @param string $language
      * @return L10nTranslationFile
      * @throws Exception

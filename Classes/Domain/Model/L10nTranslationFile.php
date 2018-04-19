@@ -81,6 +81,18 @@ class L10nTranslationFile extends AbstractTranslationFile
     }
 
     /**
+     * @param LocalizationFactory $localizationFactory
+     * @return array
+     */
+    protected function getParsedData(LocalizationFactory $localizationFactory)
+    {
+        if ($this->getSplFileInfo()->isFile() === true) {
+            return $localizationFactory->getParsedData($this->getCleanPath(), $this->getLanguage());
+        }
+        return $localizationFactory->getParsedData($this->getTranslationFile()->getCleanPath(), $this->getLanguage());
+    }
+
+    /**
      * @return void
      */
     public function initMissingTranslations()
