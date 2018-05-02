@@ -1,9 +1,10 @@
+{namespace self=Lightwerk\L10nTranslator\ViewHelpers}
 <tr>
 	<td><f:format.crop maxCharacters="200">{translation.translationKey}</f:format.crop></td>
 	<td>{l10nTranslationFile.language}</td>
 	<td>
 		<f:link.action action="list" arguments="{search: {exactMatch: 1, l10nFile: translationFile.relativePath, searchString: translation.translationSource, includeSource: 1}}">
-			{translation.translationSource}
+			<f:format.nl2br>{translation.translationSource}</f:format.nl2br>
 		</f:link.action>
 	</td>
 	<td>
@@ -16,10 +17,29 @@
 							<span class="icon-unify"><i class="fa fa-exclamation-circle"></i></span>
 						</span>
 					</span>
-					<input type="text" name="target" value="{translation.translationTarget}" size="47" />
+					<self:ifStringContainsLineBreak input="{translation.translationSource}">
+						<f:then>
+							<textarea class="translation-target" name="target" rows="5" cols="47">
+								{translation.translationTarget}
+							</textarea>
+						</f:then>
+						<f:else>
+							<input type="text" class="translation-target" name="target" value="{translation.translationTarget}" size="47" />
+						</f:else>
+					</self:ifStringContainsLineBreak>
+
 				</f:then>
 				<f:else>
-					<input type="text" name="target" value="{translation.translationTarget}" size="50" />
+					<self:ifStringContainsLineBreak input="{translation.translationSource}">
+						<f:then>
+							<textarea class="translation-target" name="target" rows="5" cols="50">
+								{translation.translationTarget}
+							</textarea>
+						</f:then>
+						<f:else>
+							<input class="translation-target" type="text" name="target" value="{translation.translationTarget}" size="50" />
+						</f:else>
+					</self:ifStringContainsLineBreak>
 				</f:else>
 			</f:if>
 			<input type="hidden" name="path" value="{translationFile.relativePath}" />

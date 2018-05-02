@@ -12,7 +12,7 @@ define(['jquery'], function ($) {
             var data = {
                 language: $('input[name=language]', $(this)).val(),
                 path: $('input[name=path]', $(this)).val(),
-                target: $('input[name=target]', $(this)).val(),
+                target: $('[name=target]', $(this)).val(),
                 key: $('input[name=key]', $(this)).val()
             };
 
@@ -22,7 +22,6 @@ define(['jquery'], function ($) {
                 data: data,
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response);
                     top.TYPO3.Notification.showMessage(
                         response.flashMessage.title,
                         response.flashMessage.message,
