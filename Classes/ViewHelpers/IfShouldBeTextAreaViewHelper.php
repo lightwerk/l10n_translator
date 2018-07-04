@@ -26,6 +26,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 class IfShouldBeTextAreaViewHelper extends AbstractConditionViewHelper
 {
 
+    const STRLEN_FOR_TEXTAREA = 50;
+
     /**
      * @return void
      */
@@ -45,7 +47,7 @@ class IfShouldBeTextAreaViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return isset($arguments['input']) && (strpos($arguments['input'], PHP_EOL) !== false || strlen($arguments['input']) > 50);
+        return isset($arguments['input']) && (strpos($arguments['input'], PHP_EOL) !== false || strlen($arguments['input']) > self::STRLEN_FOR_TEXTAREA);
     }
 
 
