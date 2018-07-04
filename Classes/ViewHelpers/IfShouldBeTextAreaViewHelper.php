@@ -23,8 +23,10 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class IfStringContainsLineBreakViewHelper extends AbstractConditionViewHelper
+class IfShouldBeTextAreaViewHelper extends AbstractConditionViewHelper
 {
+
+    const STRLEN_FOR_TEXTAREA = 50;
 
     /**
      * @return void
@@ -36,12 +38,16 @@ class IfStringContainsLineBreakViewHelper extends AbstractConditionViewHelper
 
 
     /**
+     * Returns true if the $arguments['input'] string either
+     *   * contains a line break
+     *   * exceeds 50 characters
+     *
      * @param array $arguments
      * @return bool
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return isset($arguments['input']) && strpos($arguments['input'], PHP_EOL) !== false;
+        return isset($arguments['input']) && (strpos($arguments['input'], PHP_EOL) !== false || strlen($arguments['input']) > self::STRLEN_FOR_TEXTAREA);
     }
 
 
