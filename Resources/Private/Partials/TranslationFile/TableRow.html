@@ -17,25 +17,25 @@
 							<span class="icon-unify"><i class="fa fa-exclamation-circle"></i></span>
 						</span>
 					</span>
-					<self:ifStringContainsLineBreak input="{translation.translationSource}">
+					<self:ifShouldBeTextArea input="{translation.translationSource}">
 						<f:then>
 							<textarea class="translation-target" name="target" rows="5" cols="47">{translation.translationTarget}</textarea>
 						</f:then>
 						<f:else>
 							<input type="text" class="translation-target" name="target" value="{translation.translationTarget}" size="47" />
 						</f:else>
-					</self:ifStringContainsLineBreak>
+					</self:ifShouldBeTextArea>
 
 				</f:then>
 				<f:else>
-					<self:ifStringContainsLineBreak input="{translation.translationSource}">
+					<self:ifShouldBeTextArea input="{translation.translationSource}">
 						<f:then>
 							<textarea class="translation-target" name="target" rows="5" cols="50">{translation.translationTarget}</textarea>
 						</f:then>
 						<f:else>
 							<input class="translation-target" type="text" name="target" value="{translation.translationTarget}" size="50" />
 						</f:else>
-					</self:ifStringContainsLineBreak>
+					</self:ifShouldBeTextArea>
 				</f:else>
 			</f:if>
 			<input type="hidden" name="path" value="{translationFile.relativePath}" />
