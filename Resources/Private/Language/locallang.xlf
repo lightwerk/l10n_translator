@@ -43,7 +43,7 @@
 				<source>Include Key</source>
 			</trans-unit>
 			<trans-unit id="search.heading">
-				<source>lolololo</source>
+				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="search.extendedParameters">
 				<source>Search Config</source>
