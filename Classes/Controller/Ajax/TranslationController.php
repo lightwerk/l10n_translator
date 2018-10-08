@@ -31,8 +31,9 @@ use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
 use Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory;
 use Lightwerk\L10nTranslator\Domain\Model\Translation;
 use Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -70,38 +71,40 @@ class TranslationController
     protected $cacheManager;
 
     /**
-     * @param array $params Array of parameters from the AJAX interface, currently unused
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-     * @return void
+     * @param ServerRequestInterface $request
+     * @return JsonResponse
      */
-    public function update($params = [], AjaxRequestHandler &$ajaxObj = null)
+    public function update(ServerRequestInterface $request): JsonResponse
     {
         $this->initializeObjects();
         try {
             $this->assureModuleAccess();
-            $request = $this->getRequest();
-            $translationFile = $this->translationFileFactory->findByPath($request['path']);
-            $l10nTranslationFile = $translationFile->getL10nTranslationFile($request['language']);
-            $translation = new Translation($request['path'], $request['key'], $request['target']);
+            $postParams = $request->getParsedBody();
+            $this->validateRequest($postParams);
+            $translationFile = $this->translationFileFactory->findByPath($postParams['path']);
+            $l10nTranslationFile = $translationFile->getL10nTranslationFile($postParams['language']);
+            $translation = new Translation($postParams['path'], $postParams['key'], $postParams['target']);
             $l10nTranslationFile->upsertTranslationTarget($translation);
             $this->translationFileWriterService->writeTranslation($l10nTranslationFile);
             $this->flushCache();
-            $flashMessage = array(
-                'title' => 'OK',
-                'message' => 'label updated',
-                'severity' => FlashMessage::OK
-            );
+            $content = [
+                    'flashMessage' => [
+                    'title' => 'OK',
+                    'message' => 'label updated',
+                    'severity' => FlashMessage::OK
+                ]
+            ];
         } catch (\Exception $e) {
-            $flashMessage = array(
-                'title' => 'ERROR',
-                'message' => $e->getMessage() . ' - ' . $e->getCode(),
-                'severity' => FlashMessage::ERROR
-            );
+            $content = [
+                'flashMessage' => [
+                    'title' => 'ERROR',
+                    'message' => $e->getMessage() . ' - ' . $e->getCode(),
+                    'severity' => FlashMessage::ERROR
+                ]
+            ];
         }
 
-        $ajaxObj->setContentFormat('json');
-        $ajaxObj->addContent('flashMessage', $flashMessage);
-
+        return new JsonResponse($content);
     }
 
     /**
@@ -146,34 +149,31 @@ class TranslationController
     }
 
     /**
-     * @return array
+     * @param mixed $postParams
      * @throws Exception
      */
-    protected function getRequest()
+    protected function validateRequest($postParams)
     {
-        $request = GeneralUtility::_POST();
-        if (isset($request['language']) === false || isset($request['target']) === false || isset($request['key']) === false || isset($request['path']) === false) {
+        if (!is_array($postParams)) {
             throw new Exception('Invalid request.', 1467175555);
         }
-        $language = $request['language'];
-        $path = $request['path'];
-        $target = $request['target'];
-        $key = $request['key'];
+
+        if (isset($postParams['language']) === false || isset($postParams['target']) === false || isset($postParams['key']) === false || isset($postParams['path']) === false) {
+            throw new Exception('Invalid request.', 1467175555);
+        }
         $languages = $this->l10nConfiguration->getAvailableL10nLanguages();
         $l10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
-        if (in_array($language, $languages) === false) {
-            throw new Exception('Language not configured: ' . $language, 1467175550);
+        if (in_array($postParams['language'], $languages) === false) {
+            throw new Exception('Language not configured: ' . $postParams['language'], 1467175550);
         }
-        if (in_array($path, $l10nFiles) === false) {
-            throw new Exception('Path not configured: ' . $path, 1467175551);
+        if (in_array($postParams['path'], $l10nFiles) === false) {
+            throw new Exception('Path not configured: ' . $postParams['path'], 1467175551);
         }
-        if (empty($key) === true) {
-            throw new Exception('Key may not be empty.', 1467175554);
+        if (empty($postParams['key']) === true) {
+            throw new Exception('Key must not be empty.', 1467175554);
         }
-        if ($target !== strip_tags($target)) {
+        if ($postParams['target'] !== strip_tags($postParams['target'])) {
             throw new Exception('HTML not allowed.', 1467175552);
         }
-
-        return $request;
     }
 }
