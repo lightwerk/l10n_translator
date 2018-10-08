@@ -18,7 +18,7 @@ define(['jquery'], function ($) {
 
             $.ajax({
                 type: 'POST',
-                url: TYPO3.settings.ajaxUrls['L10nTranslator::translation::update'],
+                url: TYPO3.settings.ajaxUrls['L10nTranslator_update'],
                 data: data,
                 dataType: 'json',
                 success: function (response) {
