@@ -27,6 +27,7 @@ namespace Lightwerk\L10nTranslator\Controller;
  ***************************************************************/
 
 use Lightwerk\L10nTranslator\Domain\Model\Search;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
@@ -35,6 +36,16 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  */
 class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+
+    /**
+     * @var string
+     */
+    protected $defaultViewObjectName = BackendTemplateView::class;
+
+    /**
+     * @var BackendTemplateView
+     */
+    protected $view;
 
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory
@@ -78,6 +89,7 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
      */
     public function listAction(Search $search = null)
     {
+        $this->view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/L10nTranslator/L10nTranslator');
         $translationFiles = [];
         $availableL10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
         $availableLanguages = $this->l10nConfiguration->getAvailableL10nLanguages();
