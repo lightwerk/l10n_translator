@@ -25,6 +25,8 @@ namespace Lightwerk\L10nTranslator\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 
 /**
@@ -33,8 +35,6 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
  */
 class TranslationFile extends AbstractTranslationFile
 {
-
-    const FOLDER = 'typo3conf/ext';
 
     /**
      * @var L10nTranslationFile[]
@@ -52,7 +52,7 @@ class TranslationFile extends AbstractTranslationFile
     {
         $this->splFileInfo = $splFileInfo;
 
-        $pathPart = str_replace('/', '\/', PATH_site . self::FOLDER . DIRECTORY_SEPARATOR);
+        $pathPart = str_replace('/', '\/', Environment::getExtensionsPath() . DIRECTORY_SEPARATOR);
         $this->relativePath = preg_replace('/' . $pathPart . '/', '', $this->getCleanPath());
         $parts = explode(DIRECTORY_SEPARATOR, $this->relativePath);
         if (count($parts) < 1) {
@@ -101,7 +101,7 @@ class TranslationFile extends AbstractTranslationFile
     {
         $parts = explode(DIRECTORY_SEPARATOR, $this->getRelativePath());
         array_pop($parts);
-        $path = PATH_site . L10nTranslationFile::FOLDER . DIRECTORY_SEPARATOR . $language;
+        $path = Environment::getLabelsPath() . DIRECTORY_SEPARATOR . $language;
         $path .= DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $parts) . DIRECTORY_SEPARATOR . $language . '.' . $this->getSplFileInfo()->getBasename();
         return $path;
     }

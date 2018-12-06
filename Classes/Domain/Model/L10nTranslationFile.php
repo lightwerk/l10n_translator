@@ -25,6 +25,8 @@ namespace Lightwerk\L10nTranslator\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 
 /**
@@ -34,7 +36,6 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 class L10nTranslationFile extends AbstractTranslationFile
 {
 
-    const FOLDER = 'typo3conf/l10n';
 
     /**
      * @var TranslationFile
@@ -69,7 +70,7 @@ class L10nTranslationFile extends AbstractTranslationFile
     public function initFileSystem(\SplFileInfo $splFileInfo, LocalizationFactory $localizationFactory)
     {
         $this->splFileInfo = $splFileInfo;
-        $pathPart = str_replace('/', '\/', PATH_site. self::FOLDER . DIRECTORY_SEPARATOR);
+        $pathPart = str_replace('/', '\/', Environment::getLabelsPath() . DIRECTORY_SEPARATOR);
         $this->relativePath = preg_replace('/' . $pathPart . '/', '', $this->getCleanPath());
         $parts = explode(DIRECTORY_SEPARATOR, $this->relativePath);
         if (count($parts) < 2) {
