@@ -1,73 +1,48 @@
-<f:form class="form-horizontal" action="list" controller="TranslationFile" method="POST" name="search"
+<f:form class="form-inline" action="list" controller="TranslationFile" method="POST" name="search"
 		object="{search}">
-
 	<div class="row">
 		<div class="col-sm-6">
 			<h2>
 				<f:translate key="search.heading"/>
 			</h2>
-			<div class="form-group row">
-				<label for="language" class="col-sm-4 control-label">
-					<f:translate key="tx_l10ntranslator_domain_model_search.language"/>
-				</label>
-				<div class="col-sm-6">
-					<f:form.select class="form-control" id="language" options="{languages}" property="language"
-								   prependOptionLabel="{f:translate(key: 'search.all')}" prependOptionValue=""/>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="l10nFile" class="col-sm-4 control-label">
-					<f:translate key="tx_l10ntranslator_domain_model_search.l10nFile"/>
-				</label>
-				<div class="col-sm-6">
-					<f:form.select id="l10nFile" class="form-control" property="l10nFile" options="{l10nFiles}"
-								   prependOptionLabel="{f:translate(key: 'search.all')}" prependOptionValue=""/>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="searchString" class="col-sm-4 control-label">
-					<f:translate key="tx_l10ntranslator_domain_model_search.search_string"/>
-				</label>
-				<div class="col-sm-6">
-					<f:form.textfield class="form-control" id="searchString" property="searchString"/>
-				</div>
+			<div class="form-group">
+				<f:form.textfield class="form-control" id="searchString" property="searchString" placeholder="{f:translate(key: 'tx_l10ntranslator_domain_model_search.search_string')}"/>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-4 col-sm-6">
-					<f:form.submit value="{f:translate(key: 'tx_l10ntranslator_domain_model_search')}"
-								   class="btn btn-default"/>
-				</div>
+				<f:form.select class="form-control" id="language" options="{languages}" property="language"
+							   prependOptionLabel="{f:translate(key: 'search.allLanguages')}" prependOptionValue=""/>
+			</div>
+			<div class="form-group">
+				<f:form.select id="l10nFile" class="form-control" property="l10nFile" options="{l10nFiles}"
+							   prependOptionLabel="{f:translate(key: 'search.allLanguageFiles')}" prependOptionValue=""/>
+			</div>
+			<div class="form-group">
+				<f:form.submit value="{f:translate(key: 'tx_l10ntranslator_domain_model_search')}" class="btn btn-primary"/>
 			</div>
 		</div>
 		<div class="col-sm-6">
 			<h2>
 				<f:translate key="search.extendedParameters"/>
 			</h2>
-			<div class="form-group row checkbox">
-				<label for="caseSensitive" class="col-sm-6 col-sm-offset-1">
+			<div class="checkbox">
+				<label class="checkbox-inline" for="caseSensitive">
 					<f:form.checkbox id="caseSensitive" property="caseSensitive" value="1"/>
 					<f:translate key="tx_l10ntranslator_domain_model_search.caseSensitive"/>
 				</label>
-			</div>
-			<div class="form-group row checkbox">
-				<label for="exactMatch" class="col-sm-6 col-sm-offset-1">
+				<label class="checkbox-inline" for="exactMatch">
 					<f:form.checkbox id="exactMatch" property="exactMatch" value="1"/>
 					<f:translate key="tx_l10ntranslator_domain_model_search.exactMatch"/>
 				</label>
-			</div>
-			<div class="form-group row checkbox">
-				<label for="includeSource" class="col-sm-6 col-sm-offset-1">
+				<label class="checkbox-inline" for="includeSource">
 					<f:form.checkbox id="includeSource" property="includeSource" value="1" checked="1"/>
 					<f:translate key="tx_l10ntranslator_domain_model_search.includeSource"/>
 				</label>
-			</div>
-			<div class="form-group row checkbox">
-				<label for="includeKey" class="col-sm-6 col-sm-offset-1">
+				<label class="checkbox-inline" for="includeKey">
 					<f:form.checkbox id="includeKey" property="includeKey" value="1" checked="1"/>
 					<f:translate key="tx_l10ntranslator_domain_model_search.includeKey"/>
 				</label>
 			</div>
 		</div>
 	</div>
-
+	<br>
 </f:form>
