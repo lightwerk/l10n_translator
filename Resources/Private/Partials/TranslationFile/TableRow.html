@@ -1,12 +1,12 @@
 {namespace self=Lightwerk\L10nTranslator\ViewHelpers}
 <tr>
 	<td><f:format.crop maxCharacters="200">{translation.translationKey}</f:format.crop></td>
-	<td>{l10nTranslationFile.language}</td>
 	<td>
 		<f:link.action action="list" arguments="{search: {exactMatch: 1, l10nFile: translationFile.relativePath, searchString: translation.translationSource, includeSource: 1}}">
 			<f:format.nl2br>{translation.translationSource}</f:format.nl2br>
 		</f:link.action>
 	</td>
+	<td>{l10nTranslationFile.language}</td>
 	<td>
 		<form class="l10n-translation-translation">
 			<input type="hidden" name="key" value="{translation.translationKey}" />
