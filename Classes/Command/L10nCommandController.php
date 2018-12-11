@@ -150,6 +150,28 @@ class L10nCommandController extends CommandController
     }
 
     /**
+     * @param string $language
+     * @return void
+     */
+    public function createSourceTagCommand($language)
+    {
+        $this->flushCache();
+        $this->translationFileService->createSourceTagsForAllFiles($language);
+        $this->flushCache();
+    }
+
+    /**
+     * @return void
+     */
+    public function createAllSourceTagCommand()
+    {
+        $this->flushCache();
+        $this->translationFileService->createSourceTagsForAllFilesAndLanguages();
+        $this->flushCache();
+    }
+
+
+    /**
      * @return void
      */
     public function flushCacheCommand()

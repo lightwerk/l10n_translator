@@ -61,12 +61,12 @@ class Search
     /**
      * @var bool
      */
-    protected $includeSource = false;
+    protected $includeSource = true;
 
     /**
      * @var bool
      */
-    protected $includeKey = false;
+    protected $includeKey = true;
 
     /**
      * @param string $searchString
@@ -77,7 +77,7 @@ class Search
      * @param bool $includeSource
      * @param bool $includeKey
      */
-    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseSensitive = false, $exactMatch = false, $includeSource = false, $includeKey = false)
+    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseSensitive = false, $exactMatch = false, $includeSource = true, $includeKey = true)
     {
         $this->searchString = $searchString;
         $this->language = $language;

@@ -25,6 +25,7 @@ namespace Lightwerk\L10nTranslator\Tests\Functional\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -63,7 +64,7 @@ class TranslationFileServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCas
         public function setUp()
         {
                 parent::setUp();
-                $this->l10nDeFolder = PATH_site . 'typo3conf/l10n/de/demo/Resources/Private/Language';
+                $this->l10nDeFolder = Environment::getLabelsPath() . '/de/demo/Resources/Private/Language';
                 if (is_dir($this->l10nDeFolder ) === false) {
                         mkdir($this->l10nDeFolder , 0777, true);
                 }

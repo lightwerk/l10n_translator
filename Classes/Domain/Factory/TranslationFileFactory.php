@@ -27,6 +27,7 @@ namespace Lightwerk\L10nTranslator\Domain\Factory;
  ***************************************************************/
 use Lightwerk\L10nTranslator\Domain\Model\Search;
 use Lightwerk\L10nTranslator\Domain\Model\TranslationFile;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -55,7 +56,7 @@ class TranslationFileFactory implements SingletonInterface
      */
     public function findByRelativePath($relativePath)
     {
-        $splFileInfo = new \SplFileInfo(PATH_site . TranslationFile::FOLDER . DIRECTORY_SEPARATOR . $relativePath);
+        $splFileInfo = new \SplFileInfo(Environment::getExtensionsPath() . DIRECTORY_SEPARATOR . $relativePath);
         if ($splFileInfo->isFile() === false) {
             throw new Exception('Cannot create splFileInfo with path ' . $relativePath, 1466093531);
         }
@@ -88,7 +89,7 @@ class TranslationFileFactory implements SingletonInterface
     /**
      * @param Search $search
      * @return TranslationFile[]
-     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
      */
     public function findBySearch(Search $search)
     {
@@ -96,7 +97,7 @@ class TranslationFileFactory implements SingletonInterface
         $languages = $search->hasLanguage() ? [$search->getLanguage()] : $this->l10nConfiguration->getAvailableL10nLanguages();
         $availableL10nFiles = $search->hasL10nFile() ? [$search->getL10nFile()] : $this->l10nConfiguration->getAvailableL10nFiles();
         foreach ($availableL10nFiles as $availableL10nFile) {
-            $path = PATH_site . TranslationFile::FOLDER . DIRECTORY_SEPARATOR . $availableL10nFile;
+            $path = Environment::getExtensionsPath() . DIRECTORY_SEPARATOR . $availableL10nFile;
             $translationFile = new TranslationFile();
             $translationFile->initFileSystem(new \SplFileInfo($path), $languages, $this->localizationFactory);
             $translationFile->applySearch($search);
