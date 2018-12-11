@@ -14,7 +14,8 @@ namespace Lightwerk\L10nTranslator\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+
+use TYPO3Fluid\Fluid\ViewHelpers\IfViewHelper;
 
 /**
  * Class StringUtility
@@ -23,19 +24,25 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class IfShouldBeTextAreaViewHelper extends AbstractConditionViewHelper
+class IfShouldBeTextAreaViewHelper extends IfViewHelper
 {
 
     const STRLEN_FOR_TEXTAREA = 50;
 
     /**
-     * @return void
+     * Renders <f:then> child if $condition is true, otherwise renders <f:else> child.
+     *
+     * @return string the rendered string
+     * @api
      */
-    public function initializeArguments()
+    public function render()
     {
-        $this->registerArgument('input', 'string', 'String to be evaluated.');
+        if (static::evaluateCondition($this->arguments)) {
+            return $this->renderThenChild();
+        } else {
+            return $this->renderElseChild();
+        }
     }
-
 
     /**
      * Returns true if the $arguments['input'] string either
@@ -47,7 +54,7 @@ class IfShouldBeTextAreaViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null)
     {
-        return isset($arguments['input']) && (strpos($arguments['input'], PHP_EOL) !== false || strlen($arguments['input']) > self::STRLEN_FOR_TEXTAREA);
+        return isset($arguments['condition']) && (strpos($arguments['condition'], PHP_EOL) !== false || strlen($arguments['condition']) > self::STRLEN_FOR_TEXTAREA);
     }
 
 
