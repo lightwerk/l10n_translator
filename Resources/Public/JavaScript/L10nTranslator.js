@@ -6,7 +6,7 @@ define(['jquery'], function ($) {
 
     L10nTranslator.init = function() {
 
-        $('form.l10n-translation-translation').bind('submit', function (ev) {
+        $(document).on('submit', '.l10n-translation-translation', function (ev) {
             ev.preventDefault();
 
             var data = {

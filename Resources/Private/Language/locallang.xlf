@@ -10,10 +10,10 @@
 				<source>Language</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_translation.translation_target">
-				<source>Translation Target</source>
+				<source>Target Language (Translation Target)</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_translation.translation_source">
-				<source>Translation Source</source>
+				<source>Original Language (Translation Source)</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_translation.translation_key">
 				<source>Translation Key</source>
@@ -22,13 +22,13 @@
 				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_search.search_string">
-				<source>Search String</source>
+				<source>Search for Word</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_search.language">
 				<source>Language</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_search.l10nFile">
-				<source>l10nFile</source>
+				<source>Translation File</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_search.caseSensitive">
 				<source>Case sensitive</source>
@@ -37,19 +37,28 @@
 				<source>Exact Match</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_search.includeSource">
-				<source>Include Source</source>
+				<source>Search also in original language</source>
 			</trans-unit>
 			<trans-unit id="tx_l10ntranslator_domain_model_search.includeKey">
-				<source>Include Key</source>
+				<source>Search also in translation key</source>
 			</trans-unit>
 			<trans-unit id="search.heading">
-				<source>Search</source>
+				<source>Search for Labels in XLF Files</source>
 			</trans-unit>
 			<trans-unit id="search.extendedParameters">
-				<source>Search Config</source>
+				<source>Refine Search</source>
 			</trans-unit>
 			<trans-unit id="search.all">
 				<source>All</source>
+			</trans-unit>
+			<trans-unit id="search.allLanguages">
+				<source>All Translations</source>
+			</trans-unit>
+			<trans-unit id="search.allLanguageFiles">
+				<source>All Language Files</source>
+			</trans-unit>
+			<trans-unit id="targetNotAddedYet">
+				<source>No translation given yet</source>
 			</trans-unit>
 		</body>
 	</file>
