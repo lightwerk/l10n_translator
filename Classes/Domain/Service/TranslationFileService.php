@@ -156,6 +156,21 @@ class TranslationFileService implements SingletonInterface
     }
 
     /**
+     * @param        $l10nFile
+     * @param        $language
+     * @param string $sourceLanguage
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    public function createMissingSourceTags($l10nFile, $language, $sourceLanguage = 'default')
+    {
+
+        $l10nTranslationFile = $this->mergeSourceTagFromDefaultLanguage($l10nFile, $language);
+        $this->translationFileWriterService->writeTranslation($l10nTranslationFile);
+    }
+
+    /**
      * @param string $language
      * @param string $sourceLanguage
      * @return void
@@ -168,6 +183,36 @@ class TranslationFileService implements SingletonInterface
         $l10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
         foreach ($l10nFiles as $l10nFile) {
             $this->createMissingLabels($l10nFile, $language, $sourceLanguage);
+        }
+    }
+
+    /**
+     * @param string $language
+     * @return void
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    public function createSourceTagsForAllFiles($language)
+    {
+        $l10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
+        foreach ($l10nFiles as $l10nFile) {
+            $this->createMissingSourceTags($l10nFile, $language);
+        }
+    }
+
+    /**
+     * @param string $language
+     * @return void
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    public function createSourceTagsForAllFilesAndLanguages()
+    {
+        $languages = $this->l10nConfiguration->getAvailableL10nLanguages();
+        foreach ($languages as $language) {
+            $this->createSourceTagsForAllFiles($language);
         }
     }
 
@@ -213,6 +258,27 @@ class TranslationFileService implements SingletonInterface
         foreach ($translationFile->getTranslations() as $translation) {
             if ($l10nTranslationFile->hasOwnTranslation($translation) === false) {
                 $l10nTranslationFile->addTranslation($translation);
+            }
+        }
+        return $l10nTranslationFile;
+    }
+
+    /**
+     * @param string $l10nFile
+     * @param string $language
+     * @return \Lightwerk\L10nTranslator\Domain\Model\L10nTranslationFile
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    protected function mergeSourceTagFromDefaultLanguage($l10nFile, $language)
+    {
+        $translationFile = $this->translationFileFactory->findByPath($l10nFile);
+        $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
+        foreach ($translationFile->getTranslations() as $translation) {
+            if ($l10nTranslationFile->hasOwnTranslation($translation)) {
+                $l10nTranslationFile->replaceTranslationSource($translation);
+
             }
         }
         return $l10nTranslationFile;
