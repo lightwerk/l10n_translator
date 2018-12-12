@@ -172,7 +172,7 @@ class TranslationController
         if (empty($postParams['key']) === true) {
             throw new Exception('Key must not be empty.', 1467175554);
         }
-        if ($postParams['target'] !== strip_tags($postParams['target'])) {
+        if ($postParams['target'] !== strip_tags($postParams['target']) && !$this->l10nConfiguration->isHtmlAllow()) {
             throw new Exception('HTML not allowed.', 1467175552);
         }
     }
