@@ -75,7 +75,7 @@ class TranslationFileWriterService implements SingletonInterface
         foreach ($translations as $translation) {
             if ($language === 'default') {
                 $xmlFile[] = '			<trans-unit id="' . $translation->getTranslationKey() . '">';
-                $xmlFile[] = '				<source>' . htmlspecialchars($translation->getTranslationSource()) . '</source>';
+                $xmlFile[] = '				<source>' . htmlspecialchars($translation->getTranslationTarget()) . '</source>';
                 $xmlFile[] = '			</trans-unit>';
             } else {
                 $xmlFile[] = '			<trans-unit id="' . $translation->getTranslationKey() . '">';
