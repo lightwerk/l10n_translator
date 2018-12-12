@@ -3,3 +3,6 @@ availableL10nFiles =
 
   # cat=basic/enable; type=string; label=CSV of languages handled by this extension (e.g. de,dk)
 availableLanguages =
+
+  # cat=basic/enable; type=boolean; label=Allow html in the label
+allowHtmlInLabel = 0

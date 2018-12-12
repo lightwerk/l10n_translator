@@ -71,4 +71,10 @@ class L10nConfiguration implements SingletonInterface
         $configuration = $this->getConfiguration();
         return GeneralUtility::trimExplode(',', $configuration['availableLanguages'], true);
     }
+
+    public function isHtmlAllow()
+    {
+        $configuration = $this->getConfiguration();
+        return (bool)$configuration['allowHtmlInLabel'];
+    }
 }
