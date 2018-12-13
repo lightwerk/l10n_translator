@@ -340,6 +340,9 @@ class TranslationFileService implements SingletonInterface
     /**
      * @param string $xmlFile
      * @return void
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     * @throws Exception
      */
     public function prepareXmlLanguageFiles($xmlFile)
     {
@@ -364,5 +367,20 @@ class TranslationFileService implements SingletonInterface
             }
             GeneralUtility::fixPermissions($splFileInfo->getPathname());
         }
+    }
+
+    /**
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    public function updateSourceInFiles()
+    {
+        $configuredLanguages = $this->l10nConfiguration->getAvailableL10nLanguages();
+            foreach ($configuredLanguages as $language) {
+                if($language !== 'default'){
+                    $this->createSourceTagsForAllFiles($language);
+                }
+             }
     }
 }
