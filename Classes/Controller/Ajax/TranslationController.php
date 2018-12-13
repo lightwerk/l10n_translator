@@ -30,6 +30,7 @@ namespace Lightwerk\L10nTranslator\Controller\Ajax;
 use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
 use Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory;
 use Lightwerk\L10nTranslator\Domain\Model\Translation;
+use Lightwerk\L10nTranslator\Domain\Service\TranslationFileService;
 use Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -71,6 +72,11 @@ class TranslationController
     protected $cacheManager;
 
     /**
+     * @var \Lightwerk\L10nTranslator\Domain\Service\TranslationFileService
+     */
+    protected $translationFileService;
+
+    /**
      * @param ServerRequestInterface $request
      * @return JsonResponse
      */
@@ -86,6 +92,9 @@ class TranslationController
             $translation = new Translation($postParams['path'], $postParams['key'], $postParams['target']);
             $l10nTranslationFile->upsertTranslationTarget($translation);
             $this->translationFileWriterService->writeTranslation($l10nTranslationFile);
+            if ($postParams['language'] == 'default') {
+                $this->translationFileService->updateSourceInFiles();
+            }
             $this->flushCache();
             $content = [
                     'flashMessage' => [
@@ -136,6 +145,7 @@ class TranslationController
         $this->l10nConfiguration = $this->objectManager->get(L10nConfiguration::class);
         $this->translationFileFactory = $this->objectManager->get(TranslationFileFactory::class);
         $this->translationFileWriterService = $this->objectManager->get(TranslationFileWriterService::class);
+        $this->translationFileService = $this->objectManager->get(TranslationFileService::class);
         $this->cacheManager = $this->objectManager->get(CacheManager::class);
     }
 
