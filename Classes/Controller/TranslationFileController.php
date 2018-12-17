@@ -80,6 +80,7 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
             $propertyMappingConfiguration->allowProperties('caseInSensitive');
             $propertyMappingConfiguration->allowProperties('includeSource');
             $propertyMappingConfiguration->allowProperties('includeKey');
+            $propertyMappingConfiguration->allowProperties('onlyOneTimeExactSearch');
         }
     }
 
@@ -109,6 +110,11 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
             } catch (\Lightwerk\L10nTranslator\Exception $e) {
                 $this->addFlashMessage($e->getMessage() . ' - ' . $e->getCode(), '', FlashMessage::ERROR);
             }
+        }
+        if($search !== null) {
+            if($search->checkIfIgnoreExactMatchInView()){
+                $this->addFlashMessage('', 'Search with exact match',FlashMessage::INFO);
+            };
         }
         $this->view->assign('search', $search);
         $this->view->assign('translationFiles', $translationFiles);
