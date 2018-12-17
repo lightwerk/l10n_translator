@@ -69,6 +69,12 @@ class Search
     protected $includeKey = true;
 
     /**
+     * For unmark the flag in the exactSearch, if the search come from the link of the defaultSource
+     * @var bool
+     */
+    protected $onlyOneTimeExactSearch = false;
+
+    /**
      * @param string $searchString
      * @param string $language
      * @param string $l10nFile
@@ -76,8 +82,9 @@ class Search
      * @param bool $exactMatch
      * @param bool $includeSource
      * @param bool $includeKey
+     * @param bool $onlyOneTimeExactSearch
      */
-    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseSensitive = false, $exactMatch = false, $includeSource = true, $includeKey = true)
+    public function __construct($searchString = '', $language = '', $l10nFile = '', $caseSensitive = false, $exactMatch = false, $includeSource = true, $includeKey = true, $onlyOneTimeExactSearch = false)
     {
         $this->searchString = $searchString;
         $this->language = $language;
@@ -86,6 +93,7 @@ class Search
         $this->exactMatch = $exactMatch;
         $this->includeSource = $includeSource;
         $this->includeKey = $includeKey;
+        $this->onlyOneTimeExactSearch = $onlyOneTimeExactSearch;
     }
 
     /**
@@ -169,4 +177,18 @@ class Search
     {
         return $this->includeKey;
     }
+
+    /**
+     * for searching from table row and don't set the checkbox for exact match
+     * @return bool
+     */
+    public function checkIfIgnoreExactMatchInView()
+    {
+        if ($this->onlyOneTimeExactSearch) {
+            $this->exactMatch = false;
+            return true;
+        }
+        return false;
+    }
+
 }
