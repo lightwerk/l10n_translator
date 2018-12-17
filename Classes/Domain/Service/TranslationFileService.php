@@ -27,6 +27,7 @@ namespace Lightwerk\L10nTranslator\Domain\Service;
  ***************************************************************/
 
 use Lightwerk\L10nTranslator\Domain\Model\Search;
+use Lightwerk\L10nTranslator\Domain\Model\Translation;
 use Lightwerk\L10nTranslator\Domain\Model\TranslationFile;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -370,17 +371,39 @@ class TranslationFileService implements SingletonInterface
     }
 
     /**
+     * @param array $postParam
      * @throws Exception
      * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
      * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
      */
-    public function updateSourceInFiles()
+    public function updateSourceInFiles(array $postParam)
     {
         $configuredLanguages = $this->l10nConfiguration->getAvailableL10nLanguages();
             foreach ($configuredLanguages as $language) {
                 if($language !== 'default'){
-                    $this->createSourceTagsForAllFiles($language);
+                    $this->mergeLabelInAllLanguagesAsDefault($language, $postParam);
                 }
              }
+    }
+
+    /**
+     * @param string $language
+     * @param array $postParam
+     * @return void
+     * @throws Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
+     * @throws \Lightwerk\L10nTranslator\Domain\Model\Exception
+     */
+    protected function mergeLabelInAllLanguagesAsDefault(string $language, array $postParam)
+    {
+        $translationFile = $this->translationFileFactory->findByPath($postParam['path']);
+        $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
+        foreach ($translationFile->getTranslations() as $translation) {
+            if ($l10nTranslationFile->hasOwnTranslation($translation)) {
+                $translation = new Translation('ignore this!', $postParam['key'], 'ignore this!', $postParam['target']);
+                $l10nTranslationFile->replaceTranslationSource($translation);
+                $this->translationFileWriterService->writeTranslationXlf($l10nTranslationFile);
+            }
+        }
     }
 }
