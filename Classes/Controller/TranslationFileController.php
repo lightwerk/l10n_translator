@@ -80,6 +80,7 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
             $propertyMappingConfiguration->allowProperties('caseInSensitive');
             $propertyMappingConfiguration->allowProperties('includeSource');
             $propertyMappingConfiguration->allowProperties('includeKey');
+            // for searching from table row and don't set the checkbox for exact match
             $propertyMappingConfiguration->allowProperties('onlyOneTimeExactSearch');
         }
     }
@@ -113,7 +114,7 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
         }
         if($search !== null) {
             if($search->checkIfIgnoreExactMatchInView()){
-                $this->addFlashMessage('', 'Search with exact match',FlashMessage::INFO);
+                $this->addFlashMessage('', 'Search with exact match', FlashMessage::INFO);
             };
         }
         $this->view->assign('search', $search);

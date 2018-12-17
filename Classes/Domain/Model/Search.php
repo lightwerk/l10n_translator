@@ -69,7 +69,7 @@ class Search
     protected $includeKey = true;
 
     /**
-     * For unmark the tick in the exactSearch, if the search come from the link of the defaultSource
+     * For unmark the flag in the exactSearch, if the search come from the link of the defaultSource
      * @var bool
      */
     protected $onlyOneTimeExactSearch = false;
@@ -178,6 +178,10 @@ class Search
         return $this->includeKey;
     }
 
+    /**
+     * for searching from table row and don't set the checkbox for exact match
+     * @return bool
+     */
     public function checkIfIgnoreExactMatchInView()
     {
         if ($this->onlyOneTimeExactSearch) {
