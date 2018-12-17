@@ -93,7 +93,7 @@ class TranslationController
             $l10nTranslationFile->upsertTranslationTarget($translation);
             $this->translationFileWriterService->writeTranslation($l10nTranslationFile);
             if ($postParams['language'] === 'default') {
-                $this->translationFileService->updateSourceInFiles();
+                $this->translationFileService->updateSourceInFiles($postParams);
             }
             $this->flushCache();
             $content = [
