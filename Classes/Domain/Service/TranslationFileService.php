@@ -388,7 +388,7 @@ class TranslationFileService implements SingletonInterface
 
     /**
      * @param string $language
-     * @param        $postParam
+     * @param array $postParam
      * @return void
      * @throws Exception
      * @throws \Lightwerk\L10nTranslator\Domain\Factory\Exception
