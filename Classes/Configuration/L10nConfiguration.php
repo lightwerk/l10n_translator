@@ -49,9 +49,12 @@ class L10nConfiguration implements SingletonInterface
         return $availableLanguages;
     }
 
+    /**
+     * @return array
+     */
     public function getConfiguration()
     {
-        return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['l10n_translator']);
+        return $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator'] ?? [];
     }
 
     /**
