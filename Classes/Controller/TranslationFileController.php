@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  */
 class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
     /**
      * @var string
      */
@@ -49,21 +48,45 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
 
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory
-     * @inject
      */
     protected $translationFileFactory;
 
     /**
      * @var \Lightwerk\L10nTranslator\Configuration\L10nConfiguration
-     * @inject
      */
     protected $l10nConfiguration;
 
     /**
      * @var \Lightwerk\L10nTranslator\Utility\StringUtility
-     * @inject
      */
     protected $stringUtility;
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration
+     * @return void
+     */
+    public function injectL10nConfiguration(\Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration)
+    {
+        $this->l10nConfiguration = $l10nConfiguration;
+    }
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Utility\StringUtility $stringUtility
+     * @return void
+     */
+    public function injectStringUtility(\Lightwerk\L10nTranslator\Utility\StringUtility $stringUtility)
+    {
+        $this->stringUtility = $stringUtility;
+    }
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory $translationFileFactory
+     * @return void
+     */
+    public function injectTranslationFileFactory(\Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory $translationFileFactory)
+    {
+        $this->translationFileFactory = $translationFileFactory;
+    }
 
     /**
      * @return void
@@ -112,8 +135,8 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
                 $this->addFlashMessage($e->getMessage() . ' - ' . $e->getCode(), '', FlashMessage::ERROR);
             }
         }
-        if($search !== null) {
-            if($search->checkIfIgnoreExactMatchInView()){
+        if ($search !== null) {
+            if ($search->checkIfIgnoreExactMatchInView()) {
                 $this->addFlashMessage('', 'Search with exact match', FlashMessage::INFO);
             };
         }
