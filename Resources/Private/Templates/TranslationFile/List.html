@@ -1,9 +1,7 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true"
-	  data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true" data-namespace-typo3-fluid="true">
 <f:layout name="Default"/>
 
 <f:section name="content">
-
 	<f:flashMessages/>
 	<f:render partial="FormErrors"/>
 	<f:render partial="SearchMenu" arguments="{_all}"/>
@@ -13,10 +11,9 @@
 			<table class="table table-striped table-hover">
 				<thead>
 				<tr>
-				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_key" /></th>
-				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_source" /></th>
+				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_key" /> &amp; <f:translate key="tx_l10ntranslator_domain_model_translation.translation_source" /></th>
 				<th><f:translate key="tx_l10ntranslator_domain_model_translation.language" /></th>
-				<th><f:translate key="tx_l10ntranslator_domain_model_translation.translation_target" /></th>
+				<th width="50%"><f:translate key="tx_l10ntranslator_domain_model_translation.translation_target" /></th>
 				</tr>
 				</thead>
 				<tbody>

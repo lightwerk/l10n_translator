@@ -1,43 +1,48 @@
-{namespace self=Lightwerk\L10nTranslator\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:self="http://typo3.org/ns/Lightwerk/L10nTranslator/ViewHelpers" data-namespace-typo3-fluid="true" data-namespace-typo3-fluid="true">
 <tr>
-	<td><f:format.crop maxCharacters="200">{translation.translationKey}</f:format.crop></td>
 	<td>
+		<em><f:format.crop maxCharacters="250">{translation.translationKey}</f:format.crop></em>
+		<br /><br />
 		<f:link.action action="list" arguments="{search: {exactMatch: 1, searchString: translation.translationSource, includeSource: 1, onlyOneTimeExactSearch: 1}}">
 			<f:format.nl2br>{translation.translationSource}</f:format.nl2br>
 		</f:link.action>
 	</td>
-	<td>{l10nTranslationFile.language}</td>
 	<td>
-		<form class="l10n-translation-translation">
-			<input type="hidden" name="key" value="{translation.translationKey}" />
-			<f:if condition="{missing}">
-				<f:then>
-					<span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-error" data-identifier="status-dialog-error">
-						<span class="icon-markup"><i class="fa fa-exclamation-circle"></i></span>
-					</span>
-					<self:ifShouldBeTextArea condition="{translation.translationSource}">
-						<f:then>
-							<textarea class="translation-target" name="target" rows="5" cols="47" placeholder="{f:translate(key: 'targetNotAddedYet')}">{translation.translationTarget}</textarea>
-						</f:then>
-						<f:else>
-							<input type="text" class="translation-target" name="target" value="{translation.translationTarget}" size="47" placeholder="{f:translate(key: 'targetNotAddedYet')}"/>
-						</f:else>
-					</self:ifShouldBeTextArea>
-				</f:then>
-				<f:else>
-					<self:ifShouldBeTextArea condition="{translation.translationSource}">
-						<f:then>
-							<textarea class="translation-target" name="target" rows="5" cols="50">{translation.translationTarget}</textarea>
-						</f:then>
-						<f:else>
-							<input class="translation-target" type="text" name="target" value="{translation.translationTarget}" size="50" />
-						</f:else>
-					</self:ifShouldBeTextArea>
-				</f:else>
-			</f:if>
-			<input type="hidden" name="path" value="{translationFile.relativePath}" />
-			<input type="hidden" name="language" value="{l10nTranslationFile.language}" />
-			<input type="submit" value="Update" class="btn btn-default" />
+		{l10nTranslationFile.language}
+	</td>
+	<td>
+		<form class="l10n-translation-translation form-inline">
+			<div class="form-group col-sm-12">
+				<input type="hidden" name="key" value="{translation.translationKey}" />
+				<f:if condition="{missing}">
+					<f:then>
+						<span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-error" data-identifier="status-dialog-error">
+							<span class="icon-markup"><i class="fa fa-exclamation-circle"></i></span>
+						</span>
+						<self:ifShouldBeTextArea source="{translation.translationSource}">
+							<f:then>
+								<textarea class="translation-target form-control" name="target" rows="5" placeholder="{f:translate(key: 'targetNotAddedYet')}">{translation.translationTarget}</textarea>
+							</f:then>
+							<f:else>
+								<input type="text" class="translation-target form-control" name="target" value="{translation.translationTarget}" placeholder="{f:translate(key: 'targetNotAddedYet')}"/>
+							</f:else>
+						</self:ifShouldBeTextArea>
+					</f:then>
+					<f:else>
+						<self:ifShouldBeTextArea source="{translation.translationSource}">
+							<f:then>
+								<textarea class="translation-target form-control" name="target" rows="5">{translation.translationTarget}</textarea>
+							</f:then>
+							<f:else>
+								<input class="translation-target form-control" type="text" name="target" value="{translation.translationTarget}" />
+							</f:else>
+						</self:ifShouldBeTextArea>
+					</f:else>
+				</f:if>
+				<input type="hidden" name="path" value="{translationFile.relativePath}" />
+				<input type="hidden" name="language" value="{l10nTranslationFile.language}" />
+				<input type="submit" value="Update" class="btn btn-default" />
+			</div>
 		</form>
 	</td>
 </tr>
