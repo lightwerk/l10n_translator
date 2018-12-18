@@ -14,7 +14,7 @@ namespace Lightwerk\L10nTranslator\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use Lightwerk\L10nTranslator\Utility\StringUtility;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for class \Lightwerk\L10nTranslator\StringUtility
@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class StringUtilityTest extends UnitTestCase
 {
-
     /**
      * @dataProvider stripPathToLanguageFileDataProvider
      * @param string $fullPath

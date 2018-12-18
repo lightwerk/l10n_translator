@@ -17,7 +17,7 @@ namespace Lightwerk\L10nTranslator\Tests\Unit\Domain\Service;
 
 use Lightwerk\L10nTranslator\Domain\Model\TranslationFile;
 use Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * @package TYPO3
@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
  */
 class TranslationFileWriterServiceTest extends UnitTestCase
 {
-
     /**
      * @return void
      * @test
