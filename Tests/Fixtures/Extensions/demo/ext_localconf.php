@@ -1,8 +1,4 @@
 <?php
 
-$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['l10n_translator'] = serialize(
-    [
-        'availableLanguages' => 'de',
-        'availableTranslationFiles' => 'demo/Resources/Private/Language/locallang.xlf,demo/Resources/Private/Language/test.xml'
-    ]
-);
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator']['availableLanguages'] = 'de';
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator']['availableTranslationFiles'] = 'demo/Resources/Private/Language/locallang.xlf,demo/Resources/Private/Language/test.xml';
