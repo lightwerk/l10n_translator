@@ -53,7 +53,7 @@ Create all missing labels for all existing sys_languages
 `l10n:createallmissinglabelsforallsystemlanguages`
 
 
-Convert a XML File with multilanguages to XLF Files
+Convert a XML File with multiple languages to XLF Files
 ----
 
 the first command copy the locallang.xml file to all languages in the l10n-Folder, for preparing the second command, which writes the XLF-Files
@@ -61,8 +61,3 @@ the first command copy the locallang.xml file to all languages in the l10n-Folde
 * `typo3/cli_dispatch.phpsh extbase l10n:prepareXmlLanguageFiles --xmlFile=<extKey>/Resources/Private/Language/locallang.xml`
 * `typo3/cli_dispatch.phpsh extbase l10n:allxml2xlf --xmlFile=<extKey>/Resources/Private/Language/locallang.xml`
 
-
-TODOs
-----
-* Also handle system extensions (currently "typo3conf/ext" is hardcoded)
-* Integrity and actions in BE

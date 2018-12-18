@@ -13,8 +13,8 @@ if (!defined('TYPO3_MODE')) {
     ],
     [
         'access' => 'user,group',
-        'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.svg',
-        'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_translator.xlf',
+        'icon' => 'EXT:l10n_translator/Resources/Public/Icons/Extension.svg',
+        'labels' => 'LLL:EXT:l10n_translator/Resources/Private/Language/locallang_translator.xlf',
         'navigationComponentId' => '',
         'inheritNavigationComponentFromMainModule' => false
     ]
