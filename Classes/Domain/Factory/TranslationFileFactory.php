@@ -36,18 +36,33 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class TranslationFileFactory implements SingletonInterface
 {
-
     /**
      * @var \Lightwerk\L10nTranslator\Configuration\L10nConfiguration
-     * @inject
      */
     protected $l10nConfiguration;
 
     /**
      * @var \TYPO3\CMS\Core\Localization\LocalizationFactory
-     * @inject
      */
     protected $localizationFactory;
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration
+     * @return void
+     */
+    public function injectL10nConfiguration(\Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration)
+    {
+        $this->l10nConfiguration = $l10nConfiguration;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Core\Localization\LocalizationFactory $localizationFactory
+     * @return void
+     */
+    public function injectLocalizationFactory(\TYPO3\CMS\Core\Localization\LocalizationFactory $localizationFactory)
+    {
+        $this->localizationFactory = $localizationFactory;
+    }
     
     /**
      * @param string $relativePath

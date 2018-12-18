@@ -25,7 +25,8 @@ namespace Lightwerk\L10nTranslator\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use Lightwerk\L10nTranslator\Domain\Model\Search;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\MVC\Controller\CommandController;
 
 /**
@@ -34,36 +35,75 @@ use TYPO3\CMS\Extbase\MVC\Controller\CommandController;
  */
 class L10nCommandController extends CommandController
 {
-
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory
-     * @inject
      */
     protected $translationFileFactory;
 
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService
-     * @inject
      */
     protected $translationFileWriterService;
 
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Service\TranslationFileService
-     * @inject
      */
     protected $translationFileService;
 
     /**
      * @var \Lightwerk\L10nTranslator\Configuration\L10nConfiguration
-     * @inject
      */
     protected $l10nConfiguration;
 
     /**
      * @var \TYPO3\CMS\Core\Cache\CacheManager
-     * @inject
      */
     protected $cacheManager;
+
+    /**
+     * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+     * @return void
+     */
+    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
+    {
+        $this->cacheManager = $cacheManager;
+    }
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration
+     * @return void
+     */
+    public function injectL10nConfiguration(\Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration)
+    {
+        $this->l10nConfiguration = $l10nConfiguration;
+    }
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory $translationFileFactory
+     * @return void
+     */
+    public function injectTranslationFileFactory(\Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory $translationFileFactory)
+    {
+        $this->translationFileFactory = $translationFileFactory;
+    }
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Domain\Service\TranslationFileService $translationFileService
+     * @return void
+     */
+    public function injectTranslationFileService(\Lightwerk\L10nTranslator\Domain\Service\TranslationFileService $translationFileService)
+    {
+        $this->translationFileService = $translationFileService;
+    }
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService $translationFileWriterService
+     * @return void
+     */
+    public function injectTranslationFileWriterService(\Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService $translationFileWriterService)
+    {
+        $this->translationFileWriterService = $translationFileWriterService;
+    }
 
     /**
      * @param string $xmlFile
@@ -315,11 +355,11 @@ class L10nCommandController extends CommandController
      */
     private function getAllSystemLanguages()
     {
-        $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'language_isocode',
-            'sys_language',
-            ''
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $rows = $queryBuilder->select('language_isocode')
+            ->from('sys_language')
+            ->execute()
+            ->fetchAll();
         $rows = $rows ?: [];
         return array_unique(array_column($rows, 'language_isocode'));
     }
@@ -330,13 +370,5 @@ class L10nCommandController extends CommandController
     private function getAllConfiguredLanguages()
     {
         return array_unique($this->l10nConfiguration->getAvailableL10nLanguages());
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    private function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

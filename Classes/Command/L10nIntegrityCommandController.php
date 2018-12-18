@@ -35,19 +35,35 @@ class L10nIntegrityCommandController extends CommandController
 {
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory
-     * @inject
      */
     protected $translationFileFactory;
 
     /**
      * @var \TYPO3\CMS\Core\Cache\CacheManager
-     * @inject
      */
     protected $cacheManager;
 
+
+    /**
+     * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+     * @return void
+     */
+    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
+    {
+        $this->cacheManager = $cacheManager;
+    }
+
+    /**
+     * @param \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory $translationFileFactory
+     * @return void
+     */
+    public function injectTranslationFileFactory(\Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory $translationFileFactory)
+    {
+        $this->translationFileFactory = $translationFileFactory;
+    }
+
     /**
      * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function listCommand()
     {
