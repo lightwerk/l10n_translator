@@ -15,7 +15,7 @@ namespace Lightwerk\L10nTranslator\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3Fluid\Fluid\ViewHelpers\IfViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * Class StringUtility
@@ -24,24 +24,17 @@ use TYPO3Fluid\Fluid\ViewHelpers\IfViewHelper;
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class IfShouldBeTextAreaViewHelper extends IfViewHelper
+class IfShouldBeTextAreaViewHelper extends AbstractConditionViewHelper
 {
-
     const STRLEN_FOR_TEXTAREA = 50;
 
     /**
-     * Renders <f:then> child if $condition is true, otherwise renders <f:else> child.
-     *
-     * @return string the rendered string
-     * @api
+     * Initializes the "then" and "else" arguments
      */
-    public function render()
+    public function initializeArguments()
     {
-        if (static::evaluateCondition($this->arguments)) {
-            return $this->renderThenChild();
-        } else {
-            return $this->renderElseChild();
-        }
+        parent::initializeArguments();
+        $this->registerArgument('source', 'string', 'The source of the current label', true);
     }
 
     /**
@@ -52,10 +45,8 @@ class IfShouldBeTextAreaViewHelper extends IfViewHelper
      * @param array $arguments
      * @return bool
      */
-    protected static function evaluateCondition($arguments = null)
+    protected static function evaluateCondition($arguments = null): bool
     {
-        return isset($arguments['condition']) && (strpos($arguments['condition'], PHP_EOL) !== false || strlen($arguments['condition']) > self::STRLEN_FOR_TEXTAREA);
+        return isset($arguments['source']) && (strpos($arguments['source'], PHP_EOL) !== false || strlen($arguments['source']) > self::STRLEN_FOR_TEXTAREA);
     }
-
-
 }
