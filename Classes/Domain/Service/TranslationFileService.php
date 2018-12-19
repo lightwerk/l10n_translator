@@ -355,33 +355,28 @@ class TranslationFileService implements SingletonInterface
     }
 
     /**
+     * For all configured languages we update the source of the label from the POST request.
+     * This is because it was changed in the default language which is the source of all
+     * other languages.
+     *
+     * So changes in "default" are reflected in an updated source of all other languages.
+     *
      * @param array $postParam
      */
     public function updateSourceInFiles(array $postParam)
     {
         $configuredLanguages = $this->l10nConfiguration->getAvailableL10nLanguages();
-        foreach ($configuredLanguages as $language) {
-            if ($language !== 'default') {
-                $this->mergeLabelInAllLanguagesAsDefault($language, $postParam);
-            }
-        }
-    }
-
-    /**
-     * @param string $language
-     * @param array $postParam
-     * @return void
-     */
-    protected function mergeLabelInAllLanguagesAsDefault(string $language, array $postParam)
-    {
         $translationFile = $this->translationFileFactory->findByPath($postParam['path']);
-        $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
-        foreach ($translationFile->getTranslations() as $translation) {
-            if ($l10nTranslationFile->hasOwnTranslation($translation)) {
-                $translation = new Translation('ignore this!', $postParam['key'], 'ignore this!', $postParam['target']);
-                $l10nTranslationFile->replaceTranslationSource($translation);
-                $this->translationFileWriterService->writeTranslationXlf($l10nTranslationFile);
+        $translation = new Translation('', $postParam['key'], '', $postParam['target']);
+
+        foreach ($configuredLanguages as $language) {
+            if ($language === 'default') {
+                continue;
             }
+
+            $l10nTranslationFile = $translationFile->getL10nTranslationFile($language);
+            $l10nTranslationFile->replaceTranslationSource($translation);
+            $this->translationFileWriterService->writeTranslationXlf($l10nTranslationFile);
         }
     }
 }
