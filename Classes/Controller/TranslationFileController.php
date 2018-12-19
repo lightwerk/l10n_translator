@@ -29,6 +29,7 @@ namespace Lightwerk\L10nTranslator\Controller;
 use Lightwerk\L10nTranslator\Domain\Model\Search;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 
 /**
  * @package TYPO3
@@ -95,6 +96,7 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
     {
         parent::initializeAction();
         if ($this->request->hasArgument('search')) {
+            /** @var PropertyMappingConfiguration $propertyMappingConfiguration */
             $propertyMappingConfiguration = $this->arguments['search']->getPropertyMappingConfiguration();
             $propertyMappingConfiguration->allowProperties('language');
             $propertyMappingConfiguration->allowProperties('l10nFile');
