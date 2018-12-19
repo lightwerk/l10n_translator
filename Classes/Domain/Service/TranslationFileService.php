@@ -123,6 +123,7 @@ class TranslationFileService implements SingletonInterface
                 if ($copyLabels === true) {
                     foreach ($translationFile->getTranslations() as $translation) {
                         if ($l10nTranslationFile->hasOwnTranslation($translation)) {
+                            $l10nTranslationFile->getOwnTranslation($translation)->replaceTranslationSourceByOtherTranslation($translation);
                             continue;
                         }
                         $l10nTranslationFile->addTranslation($translation);
