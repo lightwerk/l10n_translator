@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'Lightwerk.' . $_EXTKEY,
+    'Lightwerk.l10n_translator',
     'web',
     'translator',
     '',

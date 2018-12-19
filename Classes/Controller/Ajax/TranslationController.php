@@ -97,7 +97,7 @@ class TranslationController
             }
             $this->flushCache();
             $content = [
-                    'flashMessage' => [
+                'flashMessage' => [
                     'title' => 'OK',
                     'message' => 'label updated',
                     'severity' => FlashMessage::OK
