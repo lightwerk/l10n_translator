@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-06-02T11:47:10Z" product-name="demo">
+	<file source-language="en" target-language="###LANGUAGE###" datatype="plaintext" original="messages" date="###DATE###" product-name="demo">
 		<header/>
 		<body>
-			<trans-unit id="search-start" xml:space="preserve">
+			<trans-unit id="search-start">
 				<source>orig string</source>
 				<target>orig string</target>
 			</trans-unit>

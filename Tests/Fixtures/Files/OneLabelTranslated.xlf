@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="###LANGUAGE###" datatype="plaintext" original="messages" date="###DATE###" product-name="demo">
+		<header/>
+		<body>
+			<trans-unit id="search-start">
+				<source>orig string</source>
+				<target>translated string</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

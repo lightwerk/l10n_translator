@@ -256,6 +256,10 @@ class TranslationFileService implements SingletonInterface
             if ($l10nTranslationFile->hasOwnTranslation($translation) === false) {
                 $l10nTranslationFile->addTranslation($translation);
             }
+            $currentTranslation = $l10nTranslationFile->getOwnTranslation($translation);
+            if (empty($currentTranslation->getTranslationSource())) {
+                $currentTranslation->replaceTranslationSourceByOtherTranslation($translation);
+            }
         }
         return $l10nTranslationFile;
     }
