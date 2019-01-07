@@ -144,5 +144,6 @@ class TranslationFileWriterService implements SingletonInterface
         } catch (\Exception $e) {
             throw new Exception('invalide XML ' . $translationFile->getCleanPath(), 1468492172);
         }
+        unset($xmlObject);
     }
 }
