@@ -92,28 +92,6 @@ class TranslationFileServiceTest extends FunctionalTestCase
      * @return void
      * @test
      */
-    public function xml2XlfByDefaultCreatesXlfFile()
-    {
-        $xlfFile = 'demo/Resources/Private/Language/locallang.xlf';
-        $content = file_get_contents(__DIR__ . '/../../../Fixtures/Files/OneLabel.xml');
-        file_put_contents($this->l10nDeFolder . '/de.locallang.xml', $content);
-
-        $expected = str_replace(
-            ['###DATE###', '###LANGUAGE###'],
-            [gmdate('Y-m-d\TH:i:s\Z'), 'de'],
-            file_get_contents(__DIR__ . '/../../../Fixtures/Files/OneLabelTranslated.xlf')
-        );
-
-        $this->translationFileService->xml2XlfByDefaultXlf($xlfFile, 'de');
-        $this->assertTrue(file_exists($this->l10nDeFolder . '/de.locallang.xlf'));
-        $content = file_get_contents($this->l10nDeFolder . '/de.locallang.xlf');
-        $this->assertXmlStringEqualsXmlString($expected, $content);
-    }
-
-    /**
-     * @return void
-     * @test
-     */
     public function xml2XlfByDefaultCreatesXlfFileWithoutEmptyLables()
     {
         $xlfFile = 'demo/Resources/Private/Language/locallang1.xlf';
