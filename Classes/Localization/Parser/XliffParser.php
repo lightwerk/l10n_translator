@@ -34,7 +34,7 @@ class XliffParser extends \TYPO3\CMS\Core\Localization\Parser\XliffParser
      */
     public function getParsedData($sourcePath, $languageKey)
     {
-        if (GeneralUtility::makeInstance(Environment::class)->isCli()) {
+        if (Environment::isCli()) {
             return parent::getParsedData($sourcePath, $languageKey);
         }
 
