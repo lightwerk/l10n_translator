@@ -9,7 +9,7 @@ namespace Lightwerk\L10nTranslator\Localization\Parser;
  * of the License, or any later version.
  */
 
-use Lightwerk\L10nTranslator\Domain\ExtensionConfiguration;
+use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -37,7 +37,7 @@ class XliffParser extends \TYPO3\CMS\Core\Localization\Parser\XliffParser
             return parent::getParsedData($sourcePath, $languageKey);
         }
 
-        $l10nManagerConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+        $l10nManagerConfiguration = GeneralUtility::makeInstance(L10nConfiguration::class);
         if ($l10nManagerConfiguration->supportsDefault() === false) {
             return parent::getParsedData($sourcePath, $languageKey);
         }

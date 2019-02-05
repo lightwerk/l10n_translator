@@ -9,7 +9,6 @@ namespace Lightwerk\L10nTranslator\Controller\Ajax;
  * of the License, or any later version.
  */
 
-
 use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
 use Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory;
 use Lightwerk\L10nTranslator\Domain\Model\Translation;
@@ -125,7 +124,7 @@ class TranslationController
     protected function initializeObjects()
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->l10nConfiguration = $this->objectManager->get(L10nConfiguration::class);
+        $this->l10nConfiguration = GeneralUtility::makeInstance(L10nConfiguration::class);
         $this->translationFileFactory = $this->objectManager->get(TranslationFileFactory::class);
         $this->translationFileWriterService = $this->objectManager->get(TranslationFileWriterService::class);
         $this->translationFileService = $this->objectManager->get(TranslationFileService::class);
@@ -165,7 +164,7 @@ class TranslationController
         if (empty($postParams['key']) === true) {
             throw new Exception('Key must not be empty.', 1467175554);
         }
-        if ($postParams['target'] !== strip_tags($postParams['target']) && !$this->l10nConfiguration->isHtmlAllow()) {
+        if ($postParams['target'] !== strip_tags($postParams['target']) && !$this->l10nConfiguration->isHtmlAllowed()) {
             throw new Exception('HTML not allowed.', 1467175552);
         }
     }
