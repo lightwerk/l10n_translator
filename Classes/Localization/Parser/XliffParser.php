@@ -55,7 +55,8 @@ class XliffParser extends \TYPO3\CMS\Core\Localization\Parser\XliffParser
             $this->sourcePath = $this->getLocalizedFileName($sourcePath, $languageKey, true);
         }
         if (!@is_file($this->sourcePath)) {
-            throw new FileNotFoundException('Localization file does not exist', 1306332397);
+            // another change here. If we cannot find a localizedFile for default, fallback to core handling
+            return parent::getParsedData($sourcePath, $languageKey);
         }
         $LOCAL_LANG = [];
         $LOCAL_LANG[$languageKey] = $this->parseXmlFile();
