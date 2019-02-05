@@ -1,29 +1,15 @@
 <?php
 namespace Lightwerk\L10nTranslator\Command;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of TYPO3 CMS-based extension l10n_translator by b13.
  *
- *  (c) 2016 Achim Fritz <af@lightwerk.com>, Lightwerk
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ */
+
+use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
 use Lightwerk\L10nTranslator\Domain\Model\Search;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,11 +37,6 @@ class L10nCommandController extends CommandController
     protected $translationFileService;
 
     /**
-     * @var \Lightwerk\L10nTranslator\Configuration\L10nConfiguration
-     */
-    protected $l10nConfiguration;
-
-    /**
      * @var \TYPO3\CMS\Core\Cache\CacheManager
      */
     protected $cacheManager;
@@ -67,15 +48,6 @@ class L10nCommandController extends CommandController
     public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
     {
         $this->cacheManager = $cacheManager;
-    }
-
-    /**
-     * @param \Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration
-     * @return void
-     */
-    public function injectL10nConfiguration(\Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration)
-    {
-        $this->l10nConfiguration = $l10nConfiguration;
     }
 
     /**
@@ -369,6 +341,6 @@ class L10nCommandController extends CommandController
      */
     private function getAllConfiguredLanguages()
     {
-        return array_unique($this->l10nConfiguration->getAvailableL10nLanguages());
+        return GeneralUtility::makeInstance(L10nConfiguration::class)->getAvailableL10nLanguages();
     }
 }

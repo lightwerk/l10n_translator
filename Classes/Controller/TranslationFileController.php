@@ -9,9 +9,11 @@ namespace Lightwerk\L10nTranslator\Controller;
  * of the License, or any later version.
  */
 
+use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
 use Lightwerk\L10nTranslator\Domain\Model\Search;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 
 /**
@@ -36,23 +38,9 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
     protected $translationFileFactory;
 
     /**
-     * @var \Lightwerk\L10nTranslator\Configuration\L10nConfiguration
-     */
-    protected $l10nConfiguration;
-
-    /**
      * @var \Lightwerk\L10nTranslator\Utility\StringUtility
      */
     protected $stringUtility;
-
-    /**
-     * @param \Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration
-     * @return void
-     */
-    public function injectL10nConfiguration(\Lightwerk\L10nTranslator\Configuration\L10nConfiguration $l10nConfiguration)
-    {
-        $this->l10nConfiguration = $l10nConfiguration;
-    }
 
     /**
      * @param \Lightwerk\L10nTranslator\Utility\StringUtility $stringUtility
@@ -99,10 +87,11 @@ class TranslationFileController extends \TYPO3\CMS\Extbase\Mvc\Controller\Action
      */
     public function listAction(Search $search = null)
     {
+        $l10nConfiguration = GeneralUtility::makeInstance(L10nConfiguration::class);
         $this->view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/L10nTranslator/L10nTranslator');
         $translationFiles = [];
-        $availableL10nFiles = $this->l10nConfiguration->getAvailableL10nFiles();
-        $availableLanguages = $this->l10nConfiguration->getAvailableL10nLanguages();
+        $availableL10nFiles = $l10nConfiguration->getAvailableL10nFiles();
+        $availableLanguages = $l10nConfiguration->getAvailableL10nLanguages();
         $languages = [];
         foreach ($availableLanguages as $availableLanguage) {
             $languages[$availableLanguage] = $availableLanguage;

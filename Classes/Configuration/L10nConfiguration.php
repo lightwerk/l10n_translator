@@ -1,83 +1,135 @@
 <?php
 namespace Lightwerk\L10nTranslator\Configuration;
 
-/***************************************************************
- *  Copyright notice
+/*
+ * This file is part of TYPO3 CMS-based extension l10n_translator by b13.
  *
- *  (c) 2016 Achim Fritz <af@lightwerk.com>, Lightwerk
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ */
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @package TYPO3
  * @subpackage l10n_translator
+ *
+ * Helper Class for more convenient access to the extension configuration
  */
 class L10nConfiguration implements SingletonInterface
 {
 
     /**
+     * @var array
+     */
+    protected $availableL10nFiles = [];
+
+    /**
+     * @var array
+     */
+    protected $absolutePathsToConfiguredFiles = [];
+
+    /**
+     * @var bool
+     */
+    protected $supportsDefault = false;
+
+    /**
+     * @var bool
+     */
+    protected $allowHtmlInLabel = false;
+
+    /**
+     * @var array
+     */
+    protected $availableLanguages = [];
+
+    /**
+     * L10nConfiguration constructor.
+     */
+    public function __construct()
+    {
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator']['availableL10nFiles'])) {
+            $this->availableL10nFiles = GeneralUtility::trimExplode(
+                ',',
+                $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator']['availableL10nFiles'],
+                true
+            );
+        }
+
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator']['availableLanguages'])) {
+            $this->availableLanguages = GeneralUtility::trimExplode(
+                ',',
+                $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator']['availableLanguages'],
+                true
+            );
+            $this->supportsDefault = in_array('default', $this->availableLanguages);
+        }
+
+        $this->allowHtmlInLabel = (bool)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator']['allowHtmlInLabel'];
+    }
+
+    /**
      * @return array
      */
-    public function getAvailableSystemLanguages()
+    public function getAvailableL10nFiles(): array
     {
-        $langs = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'];
-        $availableLanguages = [];
-        foreach ($langs as $lang) {
-            if (trim($lang) !== '') {
-                $availableLanguages[] = $lang;
+        return $this->availableL10nFiles;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAbsolutePathsToConfiguredFiles(): array
+    {
+        if (!empty($this->availableL10nFiles) && empty($this->absolutePathsToConfiguredFiles)) {
+            foreach ($this->availableL10nFiles as $availableL10nFile) {
+                $this->absolutePathsToConfiguredFiles[] = GeneralUtility::getFileAbsFileName('EXT:' . $availableL10nFile);
             }
         }
-        return $availableLanguages;
+        return $this->absolutePathsToConfiguredFiles;
+    }
+
+    /**
+     * @return bool
+     */
+    public function supportsDefault(): bool
+    {
+        return $this->supportsDefault;
+    }
+
+    /**
+     * @param string $file
+     * @return bool
+     */
+    public function isFileAvailable(string $file): bool
+    {
+        return in_array($file, $this->availableL10nFiles);
+    }
+
+    /**
+     * @param string $file
+     * @return bool
+     */
+    public function isAbsoluteFilePathAvailable(string $file): bool
+    {
+        return in_array($file, $this->getAbsolutePathsToConfiguredFiles());
     }
 
     /**
      * @return array
      */
-    public function getConfiguration()
+    public function getAvailableL10nLanguages(): array
     {
-        return $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['l10n_translator'] ?? [];
+        return $this->availableLanguages;
     }
 
     /**
-     * @return array
+     * @return bool
      */
-    public function getAvailableL10nFiles()
+    public function isHtmlAllowed(): bool
     {
-        $configuration = $this->getConfiguration();
-        return GeneralUtility::trimExplode(',', $configuration['availableL10nFiles'], true);
-    }
-
-    /**
-     * @return array
-     */
-    public function getAvailableL10nLanguages()
-    {
-        $configuration = $this->getConfiguration();
-        return GeneralUtility::trimExplode(',', $configuration['availableLanguages'], true);
-    }
-
-    public function isHtmlAllow()
-    {
-        $configuration = $this->getConfiguration();
-        return (bool)$configuration['allowHtmlInLabel'];
+        return $this->allowHtmlInLabel;
     }
 }
