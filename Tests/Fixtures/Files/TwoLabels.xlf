@@ -7,6 +7,10 @@
         <source>orig string</source>
         <target>translated string</target>
       </trans-unit>
+      <trans-unit id="second-label">
+        <source>another orig string</source>
+        <target>another orig string</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
