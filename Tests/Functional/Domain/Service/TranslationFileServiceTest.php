@@ -214,4 +214,28 @@ class TranslationFileServiceTest extends FunctionalTestCase
         );
         $this->assertXmlStringEqualsXmlString($expected, file_get_contents($this->l10nItFolder . '/it.locallang.xlf'));
     }
+
+    /**
+     * @return void
+     * @test
+     */
+    public function createAllMissingLabelsCreatesMissingLabelsIfTranslationFilesAlreadyExist()
+    {
+        $content = str_replace(
+            ['###DATE###', '###LANGUAGE###'],
+            [gmdate('Y-m-d\TH:i:s\Z'), 'de'],
+            file_get_contents(__DIR__ . '/../../../Fixtures/Files/OneLabelTranslated.xlf')
+        );
+        file_put_contents($this->l10nDeFolder . '/de.locallang3.xlf', $content);
+        GeneralUtility::fixPermissions($this->l10nDeFolder . '/de.locallang3.xlf');
+
+        $this->translationFileService->createAllMissingLabels('de');
+
+        $expected = str_replace(
+            ['###DATE###', '###LANGUAGE###'],
+            [gmdate('Y-m-d\TH:i:s\Z'), 'de'],
+            file_get_contents(__DIR__ . '/../../../Fixtures/Files/TwoLabels.xlf')
+        );
+        $this->assertXmlStringEqualsXmlString($expected, file_get_contents($this->l10nDeFolder . '/de.locallang3.xlf'));
+    }
 }
