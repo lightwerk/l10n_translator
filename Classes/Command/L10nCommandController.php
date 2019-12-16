@@ -13,7 +13,7 @@ use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
 use Lightwerk\L10nTranslator\Domain\Model\Search;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\MVC\Controller\CommandController;
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * @package TYPO3
