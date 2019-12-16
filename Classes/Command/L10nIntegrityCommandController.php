@@ -9,7 +9,7 @@ namespace Lightwerk\L10nTranslator\Command;
  * of the License, or any later version.
  */
 use Lightwerk\L10nTranslator\Domain\Model\Search;
-use TYPO3\CMS\Extbase\MVC\Controller\CommandController;
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * @package TYPO3
