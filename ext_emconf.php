@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['l10n_translator'] = [
     'title' => 'l10n Translator',
     'description' => 'translate files in l10n folder',
     'category' => 'module',
@@ -11,11 +11,9 @@ $EM_CONF[$_EXTKEY] = [
     'uploadfolder' => '0',
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
-    'version' => '2.1.3',
+    'version' => '2.2.0',
     'constraints' => [
-        'depends' => [
-            'typo3' => '>=9.5.0',
-        ],
+        'depends' => [],
         'conflicts' => [],
         'suggests' => [],
     ],

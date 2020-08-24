@@ -11,15 +11,17 @@ namespace Lightwerk\L10nTranslator\Command;
 
 use Lightwerk\L10nTranslator\Configuration\L10nConfiguration;
 use Lightwerk\L10nTranslator\Domain\Model\Search;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class L10nCommandController extends CommandController
+class L10nCommandController extends Command
 {
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory
@@ -75,6 +77,27 @@ class L10nCommandController extends CommandController
     public function injectTranslationFileWriterService(\Lightwerk\L10nTranslator\Domain\Service\TranslationFileWriterService $translationFileWriterService)
     {
         $this->translationFileWriterService = $translationFileWriterService;
+    }
+
+    /**
+     * Configures the current command.
+     */
+    protected function configure()
+    {
+        $this->setName('l10n:commands')
+            ->setDescription('not migrated to commands');
+    }
+
+    /**
+     * Executes the current command.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('not mgirated to symfony commands');
+        return 0;
     }
 
     /**

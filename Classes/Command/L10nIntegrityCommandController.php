@@ -9,13 +9,15 @@ namespace Lightwerk\L10nTranslator\Command;
  * of the License, or any later version.
  */
 use Lightwerk\L10nTranslator\Domain\Model\Search;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @package TYPO3
  * @subpackage l10n_translator
  */
-class L10nIntegrityCommandController extends CommandController
+class L10nIntegrityCommandController extends Command
 {
     /**
      * @var \Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory
@@ -44,6 +46,27 @@ class L10nIntegrityCommandController extends CommandController
     public function injectTranslationFileFactory(\Lightwerk\L10nTranslator\Domain\Factory\TranslationFileFactory $translationFileFactory)
     {
         $this->translationFileFactory = $translationFileFactory;
+    }
+
+    /**
+     * Configures the current command.
+     */
+    protected function configure()
+    {
+        $this->setName('l10n:integrity')
+            ->setDescription('not migrated to commands');
+    }
+
+    /**
+     * Executes the current command.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('not mgirated to symfony commands');
+        return 0;
     }
 
     /**
