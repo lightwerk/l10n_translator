@@ -1,3 +1,9 @@
+:warning: Discontinued :warning:
+==
+This repository is no longer maintained. For a 10LTS compatible version, please switch to https://github.com/b13/l10n_translator.
+
+---
+
 L10n Translator
 =====
 
